@@ -1,0 +1,2023 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> stmt_block
+Rule 1     stmt_block -> seq_stmts
+Rule 2     stmt_block -> par_stmts
+Rule 3     stmt_block -> stmt_block seq_stmts
+Rule 4     stmt_block -> stmt_block par_stmts
+Rule 5     seq_stmts -> SEQ_BLOCK stmts
+Rule 6     par_stmts -> PAR_BLOCK stmts
+Rule 7     stmts -> stmt
+Rule 8     stmts -> stmts stmt
+Rule 9     stmt -> assignment
+Rule 10    stmt -> declaration
+Rule 11    stmt -> IF LPAREN condition RPAREN stmt
+Rule 12    stmt -> IF LPAREN condition RPAREN stmt ELSE stmt
+Rule 13    stmt -> WHILE LPAREN condition RPAREN stmt
+Rule 14    stmt -> LBRACE stmts RBRACE
+Rule 15    stmt -> func
+Rule 16    func -> INPUT LPAREN RPAREN
+Rule 17    func -> OUTPUT LPAREN expr RPAREN
+Rule 18    declaration -> c_channel
+Rule 19    declaration -> b_declaration
+Rule 20    declaration -> s_declaration
+Rule 21    declaration -> i_declaration
+Rule 22    condition -> condition LE_THAN expr
+Rule 23    condition -> condition GE_THAN expr
+Rule 24    condition -> condition L_THAN expr
+Rule 25    condition -> condition G_THAN expr
+Rule 26    condition -> condition EQUAL expr
+Rule 27    condition -> condition NOT_EQUAL expr
+Rule 28    condition -> bool_val
+Rule 29    condition -> expr
+Rule 30    bool_val -> TRUE
+Rule 31    bool_val -> FALSE
+Rule 32    assignment -> ID ASSIGN expr
+Rule 33    assignment -> ID ASSIGN func
+Rule 34    expr -> expr PLUS term
+Rule 35    expr -> expr MINUS term
+Rule 36    expr -> term
+Rule 37    term -> term TIMES factor
+Rule 38    term -> term DIVIDE factor
+Rule 39    term -> factor
+Rule 40    factor -> LPAREN expr RPAREN
+Rule 41    factor -> DIGIT
+Rule 42    factor -> ID
+Rule 43    factor -> STRING_VALUE
+Rule 44    empty -> <empty>
+Rule 45    c_channel -> CHANNEL ID ID ID
+Rule 46    b_declaration -> BOOL ID
+Rule 47    s_declaration -> STRING ID
+Rule 48    i_declaration -> INT ID
+
+Terminals, with rules where they appear
+
+ASSIGN               : 32 33
+BOOL                 : 46
+CHANNEL              : 45
+DIGIT                : 41
+DIVIDE               : 38
+ELSE                 : 12
+EQUAL                : 26
+FALSE                : 31
+GE_THAN              : 23
+G_THAN               : 25
+ID                   : 32 33 42 45 45 45 46 47 48
+IF                   : 11 12
+INPUT                : 16
+INT                  : 48
+LBRACE               : 14
+LE_THAN              : 22
+LPAREN               : 11 12 13 16 17 40
+L_THAN               : 24
+MINUS                : 35
+NOT_EQUAL            : 27
+OUTPUT               : 17
+PAR_BLOCK            : 6
+PLUS                 : 34
+RBRACE               : 14
+RPAREN               : 11 12 13 16 17 40
+SEQ_BLOCK            : 5
+STRING               : 47
+STRING_VALUE         : 43
+TIMES                : 37
+TRUE                 : 30
+WHILE                : 13
+error                : 
+
+Nonterminals, with rules where they appear
+
+assignment           : 9
+b_declaration        : 19
+bool_val             : 28
+c_channel            : 18
+condition            : 11 12 13 22 23 24 25 26 27
+declaration          : 10
+empty                : 
+expr                 : 17 22 23 24 25 26 27 29 32 34 35 40
+factor               : 37 38 39
+func                 : 15 33
+i_declaration        : 21
+par_stmts            : 2 4
+s_declaration        : 20
+seq_stmts            : 1 3
+stmt                 : 7 8 11 12 12 13
+stmt_block           : 3 4 0
+stmts                : 5 6 8 14
+term                 : 34 35 36 37 38
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . stmt_block
+    (1) stmt_block -> . seq_stmts
+    (2) stmt_block -> . par_stmts
+    (3) stmt_block -> . stmt_block seq_stmts
+    (4) stmt_block -> . stmt_block par_stmts
+    (5) seq_stmts -> . SEQ_BLOCK stmts
+    (6) par_stmts -> . PAR_BLOCK stmts
+
+    SEQ_BLOCK       shift and go to state 4
+    PAR_BLOCK       shift and go to state 5
+
+    stmt_block                     shift and go to state 1
+    seq_stmts                      shift and go to state 2
+    par_stmts                      shift and go to state 3
+
+state 1
+
+    (0) S' -> stmt_block .
+    (3) stmt_block -> stmt_block . seq_stmts
+    (4) stmt_block -> stmt_block . par_stmts
+    (5) seq_stmts -> . SEQ_BLOCK stmts
+    (6) par_stmts -> . PAR_BLOCK stmts
+
+    SEQ_BLOCK       shift and go to state 4
+    PAR_BLOCK       shift and go to state 5
+
+    seq_stmts                      shift and go to state 6
+    par_stmts                      shift and go to state 7
+
+state 2
+
+    (1) stmt_block -> seq_stmts .
+
+    SEQ_BLOCK       reduce using rule 1 (stmt_block -> seq_stmts .)
+    PAR_BLOCK       reduce using rule 1 (stmt_block -> seq_stmts .)
+    $end            reduce using rule 1 (stmt_block -> seq_stmts .)
+
+
+state 3
+
+    (2) stmt_block -> par_stmts .
+
+    SEQ_BLOCK       reduce using rule 2 (stmt_block -> par_stmts .)
+    PAR_BLOCK       reduce using rule 2 (stmt_block -> par_stmts .)
+    $end            reduce using rule 2 (stmt_block -> par_stmts .)
+
+
+state 4
+
+    (5) seq_stmts -> SEQ_BLOCK . stmts
+    (7) stmts -> . stmt
+    (8) stmts -> . stmts stmt
+    (9) stmt -> . assignment
+    (10) stmt -> . declaration
+    (11) stmt -> . IF LPAREN condition RPAREN stmt
+    (12) stmt -> . IF LPAREN condition RPAREN stmt ELSE stmt
+    (13) stmt -> . WHILE LPAREN condition RPAREN stmt
+    (14) stmt -> . LBRACE stmts RBRACE
+    (15) stmt -> . func
+    (32) assignment -> . ID ASSIGN expr
+    (33) assignment -> . ID ASSIGN func
+    (18) declaration -> . c_channel
+    (19) declaration -> . b_declaration
+    (20) declaration -> . s_declaration
+    (21) declaration -> . i_declaration
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (45) c_channel -> . CHANNEL ID ID ID
+    (46) b_declaration -> . BOOL ID
+    (47) s_declaration -> . STRING ID
+    (48) i_declaration -> . INT ID
+
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    LBRACE          shift and go to state 14
+    ID              shift and go to state 16
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    CHANNEL         shift and go to state 23
+    BOOL            shift and go to state 24
+    STRING          shift and go to state 25
+    INT             shift and go to state 26
+
+    stmts                          shift and go to state 8
+    stmt                           shift and go to state 9
+    assignment                     shift and go to state 10
+    declaration                    shift and go to state 11
+    func                           shift and go to state 15
+    c_channel                      shift and go to state 17
+    b_declaration                  shift and go to state 18
+    s_declaration                  shift and go to state 19
+    i_declaration                  shift and go to state 20
+
+state 5
+
+    (6) par_stmts -> PAR_BLOCK . stmts
+    (7) stmts -> . stmt
+    (8) stmts -> . stmts stmt
+    (9) stmt -> . assignment
+    (10) stmt -> . declaration
+    (11) stmt -> . IF LPAREN condition RPAREN stmt
+    (12) stmt -> . IF LPAREN condition RPAREN stmt ELSE stmt
+    (13) stmt -> . WHILE LPAREN condition RPAREN stmt
+    (14) stmt -> . LBRACE stmts RBRACE
+    (15) stmt -> . func
+    (32) assignment -> . ID ASSIGN expr
+    (33) assignment -> . ID ASSIGN func
+    (18) declaration -> . c_channel
+    (19) declaration -> . b_declaration
+    (20) declaration -> . s_declaration
+    (21) declaration -> . i_declaration
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (45) c_channel -> . CHANNEL ID ID ID
+    (46) b_declaration -> . BOOL ID
+    (47) s_declaration -> . STRING ID
+    (48) i_declaration -> . INT ID
+
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    LBRACE          shift and go to state 14
+    ID              shift and go to state 16
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    CHANNEL         shift and go to state 23
+    BOOL            shift and go to state 24
+    STRING          shift and go to state 25
+    INT             shift and go to state 26
+
+    stmts                          shift and go to state 27
+    stmt                           shift and go to state 9
+    assignment                     shift and go to state 10
+    declaration                    shift and go to state 11
+    func                           shift and go to state 15
+    c_channel                      shift and go to state 17
+    b_declaration                  shift and go to state 18
+    s_declaration                  shift and go to state 19
+    i_declaration                  shift and go to state 20
+
+state 6
+
+    (3) stmt_block -> stmt_block seq_stmts .
+
+    SEQ_BLOCK       reduce using rule 3 (stmt_block -> stmt_block seq_stmts .)
+    PAR_BLOCK       reduce using rule 3 (stmt_block -> stmt_block seq_stmts .)
+    $end            reduce using rule 3 (stmt_block -> stmt_block seq_stmts .)
+
+
+state 7
+
+    (4) stmt_block -> stmt_block par_stmts .
+
+    SEQ_BLOCK       reduce using rule 4 (stmt_block -> stmt_block par_stmts .)
+    PAR_BLOCK       reduce using rule 4 (stmt_block -> stmt_block par_stmts .)
+    $end            reduce using rule 4 (stmt_block -> stmt_block par_stmts .)
+
+
+state 8
+
+    (5) seq_stmts -> SEQ_BLOCK stmts .
+    (8) stmts -> stmts . stmt
+    (9) stmt -> . assignment
+    (10) stmt -> . declaration
+    (11) stmt -> . IF LPAREN condition RPAREN stmt
+    (12) stmt -> . IF LPAREN condition RPAREN stmt ELSE stmt
+    (13) stmt -> . WHILE LPAREN condition RPAREN stmt
+    (14) stmt -> . LBRACE stmts RBRACE
+    (15) stmt -> . func
+    (32) assignment -> . ID ASSIGN expr
+    (33) assignment -> . ID ASSIGN func
+    (18) declaration -> . c_channel
+    (19) declaration -> . b_declaration
+    (20) declaration -> . s_declaration
+    (21) declaration -> . i_declaration
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (45) c_channel -> . CHANNEL ID ID ID
+    (46) b_declaration -> . BOOL ID
+    (47) s_declaration -> . STRING ID
+    (48) i_declaration -> . INT ID
+
+    SEQ_BLOCK       reduce using rule 5 (seq_stmts -> SEQ_BLOCK stmts .)
+    PAR_BLOCK       reduce using rule 5 (seq_stmts -> SEQ_BLOCK stmts .)
+    $end            reduce using rule 5 (seq_stmts -> SEQ_BLOCK stmts .)
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    LBRACE          shift and go to state 14
+    ID              shift and go to state 16
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    CHANNEL         shift and go to state 23
+    BOOL            shift and go to state 24
+    STRING          shift and go to state 25
+    INT             shift and go to state 26
+
+    stmt                           shift and go to state 28
+    assignment                     shift and go to state 10
+    declaration                    shift and go to state 11
+    func                           shift and go to state 15
+    c_channel                      shift and go to state 17
+    b_declaration                  shift and go to state 18
+    s_declaration                  shift and go to state 19
+    i_declaration                  shift and go to state 20
+
+state 9
+
+    (7) stmts -> stmt .
+
+    IF              reduce using rule 7 (stmts -> stmt .)
+    WHILE           reduce using rule 7 (stmts -> stmt .)
+    LBRACE          reduce using rule 7 (stmts -> stmt .)
+    ID              reduce using rule 7 (stmts -> stmt .)
+    INPUT           reduce using rule 7 (stmts -> stmt .)
+    OUTPUT          reduce using rule 7 (stmts -> stmt .)
+    CHANNEL         reduce using rule 7 (stmts -> stmt .)
+    BOOL            reduce using rule 7 (stmts -> stmt .)
+    STRING          reduce using rule 7 (stmts -> stmt .)
+    INT             reduce using rule 7 (stmts -> stmt .)
+    SEQ_BLOCK       reduce using rule 7 (stmts -> stmt .)
+    PAR_BLOCK       reduce using rule 7 (stmts -> stmt .)
+    $end            reduce using rule 7 (stmts -> stmt .)
+    RBRACE          reduce using rule 7 (stmts -> stmt .)
+
+
+state 10
+
+    (9) stmt -> assignment .
+
+    IF              reduce using rule 9 (stmt -> assignment .)
+    WHILE           reduce using rule 9 (stmt -> assignment .)
+    LBRACE          reduce using rule 9 (stmt -> assignment .)
+    ID              reduce using rule 9 (stmt -> assignment .)
+    INPUT           reduce using rule 9 (stmt -> assignment .)
+    OUTPUT          reduce using rule 9 (stmt -> assignment .)
+    CHANNEL         reduce using rule 9 (stmt -> assignment .)
+    BOOL            reduce using rule 9 (stmt -> assignment .)
+    STRING          reduce using rule 9 (stmt -> assignment .)
+    INT             reduce using rule 9 (stmt -> assignment .)
+    SEQ_BLOCK       reduce using rule 9 (stmt -> assignment .)
+    PAR_BLOCK       reduce using rule 9 (stmt -> assignment .)
+    $end            reduce using rule 9 (stmt -> assignment .)
+    RBRACE          reduce using rule 9 (stmt -> assignment .)
+    ELSE            reduce using rule 9 (stmt -> assignment .)
+
+
+state 11
+
+    (10) stmt -> declaration .
+
+    IF              reduce using rule 10 (stmt -> declaration .)
+    WHILE           reduce using rule 10 (stmt -> declaration .)
+    LBRACE          reduce using rule 10 (stmt -> declaration .)
+    ID              reduce using rule 10 (stmt -> declaration .)
+    INPUT           reduce using rule 10 (stmt -> declaration .)
+    OUTPUT          reduce using rule 10 (stmt -> declaration .)
+    CHANNEL         reduce using rule 10 (stmt -> declaration .)
+    BOOL            reduce using rule 10 (stmt -> declaration .)
+    STRING          reduce using rule 10 (stmt -> declaration .)
+    INT             reduce using rule 10 (stmt -> declaration .)
+    SEQ_BLOCK       reduce using rule 10 (stmt -> declaration .)
+    PAR_BLOCK       reduce using rule 10 (stmt -> declaration .)
+    $end            reduce using rule 10 (stmt -> declaration .)
+    RBRACE          reduce using rule 10 (stmt -> declaration .)
+    ELSE            reduce using rule 10 (stmt -> declaration .)
+
+
+state 12
+
+    (11) stmt -> IF . LPAREN condition RPAREN stmt
+    (12) stmt -> IF . LPAREN condition RPAREN stmt ELSE stmt
+
+    LPAREN          shift and go to state 29
+
+
+state 13
+
+    (13) stmt -> WHILE . LPAREN condition RPAREN stmt
+
+    LPAREN          shift and go to state 30
+
+
+state 14
+
+    (14) stmt -> LBRACE . stmts RBRACE
+    (7) stmts -> . stmt
+    (8) stmts -> . stmts stmt
+    (9) stmt -> . assignment
+    (10) stmt -> . declaration
+    (11) stmt -> . IF LPAREN condition RPAREN stmt
+    (12) stmt -> . IF LPAREN condition RPAREN stmt ELSE stmt
+    (13) stmt -> . WHILE LPAREN condition RPAREN stmt
+    (14) stmt -> . LBRACE stmts RBRACE
+    (15) stmt -> . func
+    (32) assignment -> . ID ASSIGN expr
+    (33) assignment -> . ID ASSIGN func
+    (18) declaration -> . c_channel
+    (19) declaration -> . b_declaration
+    (20) declaration -> . s_declaration
+    (21) declaration -> . i_declaration
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (45) c_channel -> . CHANNEL ID ID ID
+    (46) b_declaration -> . BOOL ID
+    (47) s_declaration -> . STRING ID
+    (48) i_declaration -> . INT ID
+
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    LBRACE          shift and go to state 14
+    ID              shift and go to state 16
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    CHANNEL         shift and go to state 23
+    BOOL            shift and go to state 24
+    STRING          shift and go to state 25
+    INT             shift and go to state 26
+
+    stmts                          shift and go to state 31
+    stmt                           shift and go to state 9
+    assignment                     shift and go to state 10
+    declaration                    shift and go to state 11
+    func                           shift and go to state 15
+    c_channel                      shift and go to state 17
+    b_declaration                  shift and go to state 18
+    s_declaration                  shift and go to state 19
+    i_declaration                  shift and go to state 20
+
+state 15
+
+    (15) stmt -> func .
+
+    IF              reduce using rule 15 (stmt -> func .)
+    WHILE           reduce using rule 15 (stmt -> func .)
+    LBRACE          reduce using rule 15 (stmt -> func .)
+    ID              reduce using rule 15 (stmt -> func .)
+    INPUT           reduce using rule 15 (stmt -> func .)
+    OUTPUT          reduce using rule 15 (stmt -> func .)
+    CHANNEL         reduce using rule 15 (stmt -> func .)
+    BOOL            reduce using rule 15 (stmt -> func .)
+    STRING          reduce using rule 15 (stmt -> func .)
+    INT             reduce using rule 15 (stmt -> func .)
+    SEQ_BLOCK       reduce using rule 15 (stmt -> func .)
+    PAR_BLOCK       reduce using rule 15 (stmt -> func .)
+    $end            reduce using rule 15 (stmt -> func .)
+    RBRACE          reduce using rule 15 (stmt -> func .)
+    ELSE            reduce using rule 15 (stmt -> func .)
+
+
+state 16
+
+    (32) assignment -> ID . ASSIGN expr
+    (33) assignment -> ID . ASSIGN func
+
+    ASSIGN          shift and go to state 32
+
+
+state 17
+
+    (18) declaration -> c_channel .
+
+    IF              reduce using rule 18 (declaration -> c_channel .)
+    WHILE           reduce using rule 18 (declaration -> c_channel .)
+    LBRACE          reduce using rule 18 (declaration -> c_channel .)
+    ID              reduce using rule 18 (declaration -> c_channel .)
+    INPUT           reduce using rule 18 (declaration -> c_channel .)
+    OUTPUT          reduce using rule 18 (declaration -> c_channel .)
+    CHANNEL         reduce using rule 18 (declaration -> c_channel .)
+    BOOL            reduce using rule 18 (declaration -> c_channel .)
+    STRING          reduce using rule 18 (declaration -> c_channel .)
+    INT             reduce using rule 18 (declaration -> c_channel .)
+    SEQ_BLOCK       reduce using rule 18 (declaration -> c_channel .)
+    PAR_BLOCK       reduce using rule 18 (declaration -> c_channel .)
+    $end            reduce using rule 18 (declaration -> c_channel .)
+    RBRACE          reduce using rule 18 (declaration -> c_channel .)
+    ELSE            reduce using rule 18 (declaration -> c_channel .)
+
+
+state 18
+
+    (19) declaration -> b_declaration .
+
+    IF              reduce using rule 19 (declaration -> b_declaration .)
+    WHILE           reduce using rule 19 (declaration -> b_declaration .)
+    LBRACE          reduce using rule 19 (declaration -> b_declaration .)
+    ID              reduce using rule 19 (declaration -> b_declaration .)
+    INPUT           reduce using rule 19 (declaration -> b_declaration .)
+    OUTPUT          reduce using rule 19 (declaration -> b_declaration .)
+    CHANNEL         reduce using rule 19 (declaration -> b_declaration .)
+    BOOL            reduce using rule 19 (declaration -> b_declaration .)
+    STRING          reduce using rule 19 (declaration -> b_declaration .)
+    INT             reduce using rule 19 (declaration -> b_declaration .)
+    SEQ_BLOCK       reduce using rule 19 (declaration -> b_declaration .)
+    PAR_BLOCK       reduce using rule 19 (declaration -> b_declaration .)
+    $end            reduce using rule 19 (declaration -> b_declaration .)
+    RBRACE          reduce using rule 19 (declaration -> b_declaration .)
+    ELSE            reduce using rule 19 (declaration -> b_declaration .)
+
+
+state 19
+
+    (20) declaration -> s_declaration .
+
+    IF              reduce using rule 20 (declaration -> s_declaration .)
+    WHILE           reduce using rule 20 (declaration -> s_declaration .)
+    LBRACE          reduce using rule 20 (declaration -> s_declaration .)
+    ID              reduce using rule 20 (declaration -> s_declaration .)
+    INPUT           reduce using rule 20 (declaration -> s_declaration .)
+    OUTPUT          reduce using rule 20 (declaration -> s_declaration .)
+    CHANNEL         reduce using rule 20 (declaration -> s_declaration .)
+    BOOL            reduce using rule 20 (declaration -> s_declaration .)
+    STRING          reduce using rule 20 (declaration -> s_declaration .)
+    INT             reduce using rule 20 (declaration -> s_declaration .)
+    SEQ_BLOCK       reduce using rule 20 (declaration -> s_declaration .)
+    PAR_BLOCK       reduce using rule 20 (declaration -> s_declaration .)
+    $end            reduce using rule 20 (declaration -> s_declaration .)
+    RBRACE          reduce using rule 20 (declaration -> s_declaration .)
+    ELSE            reduce using rule 20 (declaration -> s_declaration .)
+
+
+state 20
+
+    (21) declaration -> i_declaration .
+
+    IF              reduce using rule 21 (declaration -> i_declaration .)
+    WHILE           reduce using rule 21 (declaration -> i_declaration .)
+    LBRACE          reduce using rule 21 (declaration -> i_declaration .)
+    ID              reduce using rule 21 (declaration -> i_declaration .)
+    INPUT           reduce using rule 21 (declaration -> i_declaration .)
+    OUTPUT          reduce using rule 21 (declaration -> i_declaration .)
+    CHANNEL         reduce using rule 21 (declaration -> i_declaration .)
+    BOOL            reduce using rule 21 (declaration -> i_declaration .)
+    STRING          reduce using rule 21 (declaration -> i_declaration .)
+    INT             reduce using rule 21 (declaration -> i_declaration .)
+    SEQ_BLOCK       reduce using rule 21 (declaration -> i_declaration .)
+    PAR_BLOCK       reduce using rule 21 (declaration -> i_declaration .)
+    $end            reduce using rule 21 (declaration -> i_declaration .)
+    RBRACE          reduce using rule 21 (declaration -> i_declaration .)
+    ELSE            reduce using rule 21 (declaration -> i_declaration .)
+
+
+state 21
+
+    (16) func -> INPUT . LPAREN RPAREN
+
+    LPAREN          shift and go to state 33
+
+
+state 22
+
+    (17) func -> OUTPUT . LPAREN expr RPAREN
+
+    LPAREN          shift and go to state 34
+
+
+state 23
+
+    (45) c_channel -> CHANNEL . ID ID ID
+
+    ID              shift and go to state 35
+
+
+state 24
+
+    (46) b_declaration -> BOOL . ID
+
+    ID              shift and go to state 36
+
+
+state 25
+
+    (47) s_declaration -> STRING . ID
+
+    ID              shift and go to state 37
+
+
+state 26
+
+    (48) i_declaration -> INT . ID
+
+    ID              shift and go to state 38
+
+
+state 27
+
+    (6) par_stmts -> PAR_BLOCK stmts .
+    (8) stmts -> stmts . stmt
+    (9) stmt -> . assignment
+    (10) stmt -> . declaration
+    (11) stmt -> . IF LPAREN condition RPAREN stmt
+    (12) stmt -> . IF LPAREN condition RPAREN stmt ELSE stmt
+    (13) stmt -> . WHILE LPAREN condition RPAREN stmt
+    (14) stmt -> . LBRACE stmts RBRACE
+    (15) stmt -> . func
+    (32) assignment -> . ID ASSIGN expr
+    (33) assignment -> . ID ASSIGN func
+    (18) declaration -> . c_channel
+    (19) declaration -> . b_declaration
+    (20) declaration -> . s_declaration
+    (21) declaration -> . i_declaration
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (45) c_channel -> . CHANNEL ID ID ID
+    (46) b_declaration -> . BOOL ID
+    (47) s_declaration -> . STRING ID
+    (48) i_declaration -> . INT ID
+
+    SEQ_BLOCK       reduce using rule 6 (par_stmts -> PAR_BLOCK stmts .)
+    PAR_BLOCK       reduce using rule 6 (par_stmts -> PAR_BLOCK stmts .)
+    $end            reduce using rule 6 (par_stmts -> PAR_BLOCK stmts .)
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    LBRACE          shift and go to state 14
+    ID              shift and go to state 16
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    CHANNEL         shift and go to state 23
+    BOOL            shift and go to state 24
+    STRING          shift and go to state 25
+    INT             shift and go to state 26
+
+    stmt                           shift and go to state 28
+    assignment                     shift and go to state 10
+    declaration                    shift and go to state 11
+    func                           shift and go to state 15
+    c_channel                      shift and go to state 17
+    b_declaration                  shift and go to state 18
+    s_declaration                  shift and go to state 19
+    i_declaration                  shift and go to state 20
+
+state 28
+
+    (8) stmts -> stmts stmt .
+
+    IF              reduce using rule 8 (stmts -> stmts stmt .)
+    WHILE           reduce using rule 8 (stmts -> stmts stmt .)
+    LBRACE          reduce using rule 8 (stmts -> stmts stmt .)
+    ID              reduce using rule 8 (stmts -> stmts stmt .)
+    INPUT           reduce using rule 8 (stmts -> stmts stmt .)
+    OUTPUT          reduce using rule 8 (stmts -> stmts stmt .)
+    CHANNEL         reduce using rule 8 (stmts -> stmts stmt .)
+    BOOL            reduce using rule 8 (stmts -> stmts stmt .)
+    STRING          reduce using rule 8 (stmts -> stmts stmt .)
+    INT             reduce using rule 8 (stmts -> stmts stmt .)
+    SEQ_BLOCK       reduce using rule 8 (stmts -> stmts stmt .)
+    PAR_BLOCK       reduce using rule 8 (stmts -> stmts stmt .)
+    $end            reduce using rule 8 (stmts -> stmts stmt .)
+    RBRACE          reduce using rule 8 (stmts -> stmts stmt .)
+
+
+state 29
+
+    (11) stmt -> IF LPAREN . condition RPAREN stmt
+    (12) stmt -> IF LPAREN . condition RPAREN stmt ELSE stmt
+    (22) condition -> . condition LE_THAN expr
+    (23) condition -> . condition GE_THAN expr
+    (24) condition -> . condition L_THAN expr
+    (25) condition -> . condition G_THAN expr
+    (26) condition -> . condition EQUAL expr
+    (27) condition -> . condition NOT_EQUAL expr
+    (28) condition -> . bool_val
+    (29) condition -> . expr
+    (30) bool_val -> . TRUE
+    (31) bool_val -> . FALSE
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    TRUE            shift and go to state 43
+    FALSE           shift and go to state 44
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    condition                      shift and go to state 40
+    expr                           shift and go to state 41
+    bool_val                       shift and go to state 42
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 30
+
+    (13) stmt -> WHILE LPAREN . condition RPAREN stmt
+    (22) condition -> . condition LE_THAN expr
+    (23) condition -> . condition GE_THAN expr
+    (24) condition -> . condition L_THAN expr
+    (25) condition -> . condition G_THAN expr
+    (26) condition -> . condition EQUAL expr
+    (27) condition -> . condition NOT_EQUAL expr
+    (28) condition -> . bool_val
+    (29) condition -> . expr
+    (30) bool_val -> . TRUE
+    (31) bool_val -> . FALSE
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    TRUE            shift and go to state 43
+    FALSE           shift and go to state 44
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    condition                      shift and go to state 50
+    expr                           shift and go to state 41
+    bool_val                       shift and go to state 42
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 31
+
+    (14) stmt -> LBRACE stmts . RBRACE
+    (8) stmts -> stmts . stmt
+    (9) stmt -> . assignment
+    (10) stmt -> . declaration
+    (11) stmt -> . IF LPAREN condition RPAREN stmt
+    (12) stmt -> . IF LPAREN condition RPAREN stmt ELSE stmt
+    (13) stmt -> . WHILE LPAREN condition RPAREN stmt
+    (14) stmt -> . LBRACE stmts RBRACE
+    (15) stmt -> . func
+    (32) assignment -> . ID ASSIGN expr
+    (33) assignment -> . ID ASSIGN func
+    (18) declaration -> . c_channel
+    (19) declaration -> . b_declaration
+    (20) declaration -> . s_declaration
+    (21) declaration -> . i_declaration
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (45) c_channel -> . CHANNEL ID ID ID
+    (46) b_declaration -> . BOOL ID
+    (47) s_declaration -> . STRING ID
+    (48) i_declaration -> . INT ID
+
+    RBRACE          shift and go to state 51
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    LBRACE          shift and go to state 14
+    ID              shift and go to state 16
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    CHANNEL         shift and go to state 23
+    BOOL            shift and go to state 24
+    STRING          shift and go to state 25
+    INT             shift and go to state 26
+
+    stmt                           shift and go to state 28
+    assignment                     shift and go to state 10
+    declaration                    shift and go to state 11
+    func                           shift and go to state 15
+    c_channel                      shift and go to state 17
+    b_declaration                  shift and go to state 18
+    s_declaration                  shift and go to state 19
+    i_declaration                  shift and go to state 20
+
+state 32
+
+    (32) assignment -> ID ASSIGN . expr
+    (33) assignment -> ID ASSIGN . func
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    expr                           shift and go to state 52
+    func                           shift and go to state 53
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 33
+
+    (16) func -> INPUT LPAREN . RPAREN
+
+    RPAREN          shift and go to state 54
+
+
+state 34
+
+    (17) func -> OUTPUT LPAREN . expr RPAREN
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    expr                           shift and go to state 55
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 35
+
+    (45) c_channel -> CHANNEL ID . ID ID
+
+    ID              shift and go to state 56
+
+
+state 36
+
+    (46) b_declaration -> BOOL ID .
+
+    IF              reduce using rule 46 (b_declaration -> BOOL ID .)
+    WHILE           reduce using rule 46 (b_declaration -> BOOL ID .)
+    LBRACE          reduce using rule 46 (b_declaration -> BOOL ID .)
+    ID              reduce using rule 46 (b_declaration -> BOOL ID .)
+    INPUT           reduce using rule 46 (b_declaration -> BOOL ID .)
+    OUTPUT          reduce using rule 46 (b_declaration -> BOOL ID .)
+    CHANNEL         reduce using rule 46 (b_declaration -> BOOL ID .)
+    BOOL            reduce using rule 46 (b_declaration -> BOOL ID .)
+    STRING          reduce using rule 46 (b_declaration -> BOOL ID .)
+    INT             reduce using rule 46 (b_declaration -> BOOL ID .)
+    SEQ_BLOCK       reduce using rule 46 (b_declaration -> BOOL ID .)
+    PAR_BLOCK       reduce using rule 46 (b_declaration -> BOOL ID .)
+    $end            reduce using rule 46 (b_declaration -> BOOL ID .)
+    RBRACE          reduce using rule 46 (b_declaration -> BOOL ID .)
+    ELSE            reduce using rule 46 (b_declaration -> BOOL ID .)
+
+
+state 37
+
+    (47) s_declaration -> STRING ID .
+
+    IF              reduce using rule 47 (s_declaration -> STRING ID .)
+    WHILE           reduce using rule 47 (s_declaration -> STRING ID .)
+    LBRACE          reduce using rule 47 (s_declaration -> STRING ID .)
+    ID              reduce using rule 47 (s_declaration -> STRING ID .)
+    INPUT           reduce using rule 47 (s_declaration -> STRING ID .)
+    OUTPUT          reduce using rule 47 (s_declaration -> STRING ID .)
+    CHANNEL         reduce using rule 47 (s_declaration -> STRING ID .)
+    BOOL            reduce using rule 47 (s_declaration -> STRING ID .)
+    STRING          reduce using rule 47 (s_declaration -> STRING ID .)
+    INT             reduce using rule 47 (s_declaration -> STRING ID .)
+    SEQ_BLOCK       reduce using rule 47 (s_declaration -> STRING ID .)
+    PAR_BLOCK       reduce using rule 47 (s_declaration -> STRING ID .)
+    $end            reduce using rule 47 (s_declaration -> STRING ID .)
+    RBRACE          reduce using rule 47 (s_declaration -> STRING ID .)
+    ELSE            reduce using rule 47 (s_declaration -> STRING ID .)
+
+
+state 38
+
+    (48) i_declaration -> INT ID .
+
+    IF              reduce using rule 48 (i_declaration -> INT ID .)
+    WHILE           reduce using rule 48 (i_declaration -> INT ID .)
+    LBRACE          reduce using rule 48 (i_declaration -> INT ID .)
+    ID              reduce using rule 48 (i_declaration -> INT ID .)
+    INPUT           reduce using rule 48 (i_declaration -> INT ID .)
+    OUTPUT          reduce using rule 48 (i_declaration -> INT ID .)
+    CHANNEL         reduce using rule 48 (i_declaration -> INT ID .)
+    BOOL            reduce using rule 48 (i_declaration -> INT ID .)
+    STRING          reduce using rule 48 (i_declaration -> INT ID .)
+    INT             reduce using rule 48 (i_declaration -> INT ID .)
+    SEQ_BLOCK       reduce using rule 48 (i_declaration -> INT ID .)
+    PAR_BLOCK       reduce using rule 48 (i_declaration -> INT ID .)
+    $end            reduce using rule 48 (i_declaration -> INT ID .)
+    RBRACE          reduce using rule 48 (i_declaration -> INT ID .)
+    ELSE            reduce using rule 48 (i_declaration -> INT ID .)
+
+
+state 39
+
+    (40) factor -> LPAREN . expr RPAREN
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    expr                           shift and go to state 57
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 40
+
+    (11) stmt -> IF LPAREN condition . RPAREN stmt
+    (12) stmt -> IF LPAREN condition . RPAREN stmt ELSE stmt
+    (22) condition -> condition . LE_THAN expr
+    (23) condition -> condition . GE_THAN expr
+    (24) condition -> condition . L_THAN expr
+    (25) condition -> condition . G_THAN expr
+    (26) condition -> condition . EQUAL expr
+    (27) condition -> condition . NOT_EQUAL expr
+
+    RPAREN          shift and go to state 58
+    LE_THAN         shift and go to state 59
+    GE_THAN         shift and go to state 60
+    L_THAN          shift and go to state 61
+    G_THAN          shift and go to state 62
+    EQUAL           shift and go to state 63
+    NOT_EQUAL       shift and go to state 64
+
+
+state 41
+
+    (29) condition -> expr .
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    RPAREN          reduce using rule 29 (condition -> expr .)
+    LE_THAN         reduce using rule 29 (condition -> expr .)
+    GE_THAN         reduce using rule 29 (condition -> expr .)
+    L_THAN          reduce using rule 29 (condition -> expr .)
+    G_THAN          reduce using rule 29 (condition -> expr .)
+    EQUAL           reduce using rule 29 (condition -> expr .)
+    NOT_EQUAL       reduce using rule 29 (condition -> expr .)
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 42
+
+    (28) condition -> bool_val .
+
+    RPAREN          reduce using rule 28 (condition -> bool_val .)
+    LE_THAN         reduce using rule 28 (condition -> bool_val .)
+    GE_THAN         reduce using rule 28 (condition -> bool_val .)
+    L_THAN          reduce using rule 28 (condition -> bool_val .)
+    G_THAN          reduce using rule 28 (condition -> bool_val .)
+    EQUAL           reduce using rule 28 (condition -> bool_val .)
+    NOT_EQUAL       reduce using rule 28 (condition -> bool_val .)
+
+
+state 43
+
+    (30) bool_val -> TRUE .
+
+    RPAREN          reduce using rule 30 (bool_val -> TRUE .)
+    LE_THAN         reduce using rule 30 (bool_val -> TRUE .)
+    GE_THAN         reduce using rule 30 (bool_val -> TRUE .)
+    L_THAN          reduce using rule 30 (bool_val -> TRUE .)
+    G_THAN          reduce using rule 30 (bool_val -> TRUE .)
+    EQUAL           reduce using rule 30 (bool_val -> TRUE .)
+    NOT_EQUAL       reduce using rule 30 (bool_val -> TRUE .)
+
+
+state 44
+
+    (31) bool_val -> FALSE .
+
+    RPAREN          reduce using rule 31 (bool_val -> FALSE .)
+    LE_THAN         reduce using rule 31 (bool_val -> FALSE .)
+    GE_THAN         reduce using rule 31 (bool_val -> FALSE .)
+    L_THAN          reduce using rule 31 (bool_val -> FALSE .)
+    G_THAN          reduce using rule 31 (bool_val -> FALSE .)
+    EQUAL           reduce using rule 31 (bool_val -> FALSE .)
+    NOT_EQUAL       reduce using rule 31 (bool_val -> FALSE .)
+
+
+state 45
+
+    (36) expr -> term .
+    (37) term -> term . TIMES factor
+    (38) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 36 (expr -> term .)
+    MINUS           reduce using rule 36 (expr -> term .)
+    RPAREN          reduce using rule 36 (expr -> term .)
+    LE_THAN         reduce using rule 36 (expr -> term .)
+    GE_THAN         reduce using rule 36 (expr -> term .)
+    L_THAN          reduce using rule 36 (expr -> term .)
+    G_THAN          reduce using rule 36 (expr -> term .)
+    EQUAL           reduce using rule 36 (expr -> term .)
+    NOT_EQUAL       reduce using rule 36 (expr -> term .)
+    IF              reduce using rule 36 (expr -> term .)
+    WHILE           reduce using rule 36 (expr -> term .)
+    LBRACE          reduce using rule 36 (expr -> term .)
+    ID              reduce using rule 36 (expr -> term .)
+    INPUT           reduce using rule 36 (expr -> term .)
+    OUTPUT          reduce using rule 36 (expr -> term .)
+    CHANNEL         reduce using rule 36 (expr -> term .)
+    BOOL            reduce using rule 36 (expr -> term .)
+    STRING          reduce using rule 36 (expr -> term .)
+    INT             reduce using rule 36 (expr -> term .)
+    SEQ_BLOCK       reduce using rule 36 (expr -> term .)
+    PAR_BLOCK       reduce using rule 36 (expr -> term .)
+    $end            reduce using rule 36 (expr -> term .)
+    RBRACE          reduce using rule 36 (expr -> term .)
+    ELSE            reduce using rule 36 (expr -> term .)
+    TIMES           shift and go to state 67
+    DIVIDE          shift and go to state 68
+
+
+state 46
+
+    (39) term -> factor .
+
+    TIMES           reduce using rule 39 (term -> factor .)
+    DIVIDE          reduce using rule 39 (term -> factor .)
+    PLUS            reduce using rule 39 (term -> factor .)
+    MINUS           reduce using rule 39 (term -> factor .)
+    RPAREN          reduce using rule 39 (term -> factor .)
+    LE_THAN         reduce using rule 39 (term -> factor .)
+    GE_THAN         reduce using rule 39 (term -> factor .)
+    L_THAN          reduce using rule 39 (term -> factor .)
+    G_THAN          reduce using rule 39 (term -> factor .)
+    EQUAL           reduce using rule 39 (term -> factor .)
+    NOT_EQUAL       reduce using rule 39 (term -> factor .)
+    IF              reduce using rule 39 (term -> factor .)
+    WHILE           reduce using rule 39 (term -> factor .)
+    LBRACE          reduce using rule 39 (term -> factor .)
+    ID              reduce using rule 39 (term -> factor .)
+    INPUT           reduce using rule 39 (term -> factor .)
+    OUTPUT          reduce using rule 39 (term -> factor .)
+    CHANNEL         reduce using rule 39 (term -> factor .)
+    BOOL            reduce using rule 39 (term -> factor .)
+    STRING          reduce using rule 39 (term -> factor .)
+    INT             reduce using rule 39 (term -> factor .)
+    SEQ_BLOCK       reduce using rule 39 (term -> factor .)
+    PAR_BLOCK       reduce using rule 39 (term -> factor .)
+    $end            reduce using rule 39 (term -> factor .)
+    RBRACE          reduce using rule 39 (term -> factor .)
+    ELSE            reduce using rule 39 (term -> factor .)
+
+
+state 47
+
+    (41) factor -> DIGIT .
+
+    TIMES           reduce using rule 41 (factor -> DIGIT .)
+    DIVIDE          reduce using rule 41 (factor -> DIGIT .)
+    PLUS            reduce using rule 41 (factor -> DIGIT .)
+    MINUS           reduce using rule 41 (factor -> DIGIT .)
+    RPAREN          reduce using rule 41 (factor -> DIGIT .)
+    LE_THAN         reduce using rule 41 (factor -> DIGIT .)
+    GE_THAN         reduce using rule 41 (factor -> DIGIT .)
+    L_THAN          reduce using rule 41 (factor -> DIGIT .)
+    G_THAN          reduce using rule 41 (factor -> DIGIT .)
+    EQUAL           reduce using rule 41 (factor -> DIGIT .)
+    NOT_EQUAL       reduce using rule 41 (factor -> DIGIT .)
+    IF              reduce using rule 41 (factor -> DIGIT .)
+    WHILE           reduce using rule 41 (factor -> DIGIT .)
+    LBRACE          reduce using rule 41 (factor -> DIGIT .)
+    ID              reduce using rule 41 (factor -> DIGIT .)
+    INPUT           reduce using rule 41 (factor -> DIGIT .)
+    OUTPUT          reduce using rule 41 (factor -> DIGIT .)
+    CHANNEL         reduce using rule 41 (factor -> DIGIT .)
+    BOOL            reduce using rule 41 (factor -> DIGIT .)
+    STRING          reduce using rule 41 (factor -> DIGIT .)
+    INT             reduce using rule 41 (factor -> DIGIT .)
+    SEQ_BLOCK       reduce using rule 41 (factor -> DIGIT .)
+    PAR_BLOCK       reduce using rule 41 (factor -> DIGIT .)
+    $end            reduce using rule 41 (factor -> DIGIT .)
+    RBRACE          reduce using rule 41 (factor -> DIGIT .)
+    ELSE            reduce using rule 41 (factor -> DIGIT .)
+
+
+state 48
+
+    (42) factor -> ID .
+
+    TIMES           reduce using rule 42 (factor -> ID .)
+    DIVIDE          reduce using rule 42 (factor -> ID .)
+    PLUS            reduce using rule 42 (factor -> ID .)
+    MINUS           reduce using rule 42 (factor -> ID .)
+    RPAREN          reduce using rule 42 (factor -> ID .)
+    LE_THAN         reduce using rule 42 (factor -> ID .)
+    GE_THAN         reduce using rule 42 (factor -> ID .)
+    L_THAN          reduce using rule 42 (factor -> ID .)
+    G_THAN          reduce using rule 42 (factor -> ID .)
+    EQUAL           reduce using rule 42 (factor -> ID .)
+    NOT_EQUAL       reduce using rule 42 (factor -> ID .)
+    IF              reduce using rule 42 (factor -> ID .)
+    WHILE           reduce using rule 42 (factor -> ID .)
+    LBRACE          reduce using rule 42 (factor -> ID .)
+    ID              reduce using rule 42 (factor -> ID .)
+    INPUT           reduce using rule 42 (factor -> ID .)
+    OUTPUT          reduce using rule 42 (factor -> ID .)
+    CHANNEL         reduce using rule 42 (factor -> ID .)
+    BOOL            reduce using rule 42 (factor -> ID .)
+    STRING          reduce using rule 42 (factor -> ID .)
+    INT             reduce using rule 42 (factor -> ID .)
+    SEQ_BLOCK       reduce using rule 42 (factor -> ID .)
+    PAR_BLOCK       reduce using rule 42 (factor -> ID .)
+    $end            reduce using rule 42 (factor -> ID .)
+    RBRACE          reduce using rule 42 (factor -> ID .)
+    ELSE            reduce using rule 42 (factor -> ID .)
+
+
+state 49
+
+    (43) factor -> STRING_VALUE .
+
+    TIMES           reduce using rule 43 (factor -> STRING_VALUE .)
+    DIVIDE          reduce using rule 43 (factor -> STRING_VALUE .)
+    PLUS            reduce using rule 43 (factor -> STRING_VALUE .)
+    MINUS           reduce using rule 43 (factor -> STRING_VALUE .)
+    RPAREN          reduce using rule 43 (factor -> STRING_VALUE .)
+    LE_THAN         reduce using rule 43 (factor -> STRING_VALUE .)
+    GE_THAN         reduce using rule 43 (factor -> STRING_VALUE .)
+    L_THAN          reduce using rule 43 (factor -> STRING_VALUE .)
+    G_THAN          reduce using rule 43 (factor -> STRING_VALUE .)
+    EQUAL           reduce using rule 43 (factor -> STRING_VALUE .)
+    NOT_EQUAL       reduce using rule 43 (factor -> STRING_VALUE .)
+    IF              reduce using rule 43 (factor -> STRING_VALUE .)
+    WHILE           reduce using rule 43 (factor -> STRING_VALUE .)
+    LBRACE          reduce using rule 43 (factor -> STRING_VALUE .)
+    ID              reduce using rule 43 (factor -> STRING_VALUE .)
+    INPUT           reduce using rule 43 (factor -> STRING_VALUE .)
+    OUTPUT          reduce using rule 43 (factor -> STRING_VALUE .)
+    CHANNEL         reduce using rule 43 (factor -> STRING_VALUE .)
+    BOOL            reduce using rule 43 (factor -> STRING_VALUE .)
+    STRING          reduce using rule 43 (factor -> STRING_VALUE .)
+    INT             reduce using rule 43 (factor -> STRING_VALUE .)
+    SEQ_BLOCK       reduce using rule 43 (factor -> STRING_VALUE .)
+    PAR_BLOCK       reduce using rule 43 (factor -> STRING_VALUE .)
+    $end            reduce using rule 43 (factor -> STRING_VALUE .)
+    RBRACE          reduce using rule 43 (factor -> STRING_VALUE .)
+    ELSE            reduce using rule 43 (factor -> STRING_VALUE .)
+
+
+state 50
+
+    (13) stmt -> WHILE LPAREN condition . RPAREN stmt
+    (22) condition -> condition . LE_THAN expr
+    (23) condition -> condition . GE_THAN expr
+    (24) condition -> condition . L_THAN expr
+    (25) condition -> condition . G_THAN expr
+    (26) condition -> condition . EQUAL expr
+    (27) condition -> condition . NOT_EQUAL expr
+
+    RPAREN          shift and go to state 69
+    LE_THAN         shift and go to state 59
+    GE_THAN         shift and go to state 60
+    L_THAN          shift and go to state 61
+    G_THAN          shift and go to state 62
+    EQUAL           shift and go to state 63
+    NOT_EQUAL       shift and go to state 64
+
+
+state 51
+
+    (14) stmt -> LBRACE stmts RBRACE .
+
+    IF              reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    WHILE           reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    LBRACE          reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    ID              reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    INPUT           reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    OUTPUT          reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    CHANNEL         reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    BOOL            reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    STRING          reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    INT             reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    SEQ_BLOCK       reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    PAR_BLOCK       reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    $end            reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    RBRACE          reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+    ELSE            reduce using rule 14 (stmt -> LBRACE stmts RBRACE .)
+
+
+state 52
+
+    (32) assignment -> ID ASSIGN expr .
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    IF              reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    WHILE           reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    LBRACE          reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    ID              reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    INPUT           reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    OUTPUT          reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    CHANNEL         reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    BOOL            reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    STRING          reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    INT             reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    SEQ_BLOCK       reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    PAR_BLOCK       reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    $end            reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    RBRACE          reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    ELSE            reduce using rule 32 (assignment -> ID ASSIGN expr .)
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 53
+
+    (33) assignment -> ID ASSIGN func .
+
+    IF              reduce using rule 33 (assignment -> ID ASSIGN func .)
+    WHILE           reduce using rule 33 (assignment -> ID ASSIGN func .)
+    LBRACE          reduce using rule 33 (assignment -> ID ASSIGN func .)
+    ID              reduce using rule 33 (assignment -> ID ASSIGN func .)
+    INPUT           reduce using rule 33 (assignment -> ID ASSIGN func .)
+    OUTPUT          reduce using rule 33 (assignment -> ID ASSIGN func .)
+    CHANNEL         reduce using rule 33 (assignment -> ID ASSIGN func .)
+    BOOL            reduce using rule 33 (assignment -> ID ASSIGN func .)
+    STRING          reduce using rule 33 (assignment -> ID ASSIGN func .)
+    INT             reduce using rule 33 (assignment -> ID ASSIGN func .)
+    SEQ_BLOCK       reduce using rule 33 (assignment -> ID ASSIGN func .)
+    PAR_BLOCK       reduce using rule 33 (assignment -> ID ASSIGN func .)
+    $end            reduce using rule 33 (assignment -> ID ASSIGN func .)
+    RBRACE          reduce using rule 33 (assignment -> ID ASSIGN func .)
+    ELSE            reduce using rule 33 (assignment -> ID ASSIGN func .)
+
+
+state 54
+
+    (16) func -> INPUT LPAREN RPAREN .
+
+    IF              reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    WHILE           reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    LBRACE          reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    ID              reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    INPUT           reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    OUTPUT          reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    CHANNEL         reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    BOOL            reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    STRING          reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    INT             reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    SEQ_BLOCK       reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    PAR_BLOCK       reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    $end            reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    RBRACE          reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+    ELSE            reduce using rule 16 (func -> INPUT LPAREN RPAREN .)
+
+
+state 55
+
+    (17) func -> OUTPUT LPAREN expr . RPAREN
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    RPAREN          shift and go to state 70
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 56
+
+    (45) c_channel -> CHANNEL ID ID . ID
+
+    ID              shift and go to state 71
+
+
+state 57
+
+    (40) factor -> LPAREN expr . RPAREN
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    RPAREN          shift and go to state 72
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 58
+
+    (11) stmt -> IF LPAREN condition RPAREN . stmt
+    (12) stmt -> IF LPAREN condition RPAREN . stmt ELSE stmt
+    (9) stmt -> . assignment
+    (10) stmt -> . declaration
+    (11) stmt -> . IF LPAREN condition RPAREN stmt
+    (12) stmt -> . IF LPAREN condition RPAREN stmt ELSE stmt
+    (13) stmt -> . WHILE LPAREN condition RPAREN stmt
+    (14) stmt -> . LBRACE stmts RBRACE
+    (15) stmt -> . func
+    (32) assignment -> . ID ASSIGN expr
+    (33) assignment -> . ID ASSIGN func
+    (18) declaration -> . c_channel
+    (19) declaration -> . b_declaration
+    (20) declaration -> . s_declaration
+    (21) declaration -> . i_declaration
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (45) c_channel -> . CHANNEL ID ID ID
+    (46) b_declaration -> . BOOL ID
+    (47) s_declaration -> . STRING ID
+    (48) i_declaration -> . INT ID
+
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    LBRACE          shift and go to state 14
+    ID              shift and go to state 16
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    CHANNEL         shift and go to state 23
+    BOOL            shift and go to state 24
+    STRING          shift and go to state 25
+    INT             shift and go to state 26
+
+    stmt                           shift and go to state 73
+    assignment                     shift and go to state 10
+    declaration                    shift and go to state 11
+    func                           shift and go to state 15
+    c_channel                      shift and go to state 17
+    b_declaration                  shift and go to state 18
+    s_declaration                  shift and go to state 19
+    i_declaration                  shift and go to state 20
+
+state 59
+
+    (22) condition -> condition LE_THAN . expr
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    expr                           shift and go to state 74
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 60
+
+    (23) condition -> condition GE_THAN . expr
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    expr                           shift and go to state 75
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 61
+
+    (24) condition -> condition L_THAN . expr
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    expr                           shift and go to state 76
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 62
+
+    (25) condition -> condition G_THAN . expr
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    expr                           shift and go to state 77
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 63
+
+    (26) condition -> condition EQUAL . expr
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    expr                           shift and go to state 78
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 64
+
+    (27) condition -> condition NOT_EQUAL . expr
+    (34) expr -> . expr PLUS term
+    (35) expr -> . expr MINUS term
+    (36) expr -> . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    expr                           shift and go to state 79
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
+
+state 65
+
+    (34) expr -> expr PLUS . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    term                           shift and go to state 80
+    factor                         shift and go to state 46
+
+state 66
+
+    (35) expr -> expr MINUS . term
+    (37) term -> . term TIMES factor
+    (38) term -> . term DIVIDE factor
+    (39) term -> . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    term                           shift and go to state 81
+    factor                         shift and go to state 46
+
+state 67
+
+    (37) term -> term TIMES . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    factor                         shift and go to state 82
+
+state 68
+
+    (38) term -> term DIVIDE . factor
+    (40) factor -> . LPAREN expr RPAREN
+    (41) factor -> . DIGIT
+    (42) factor -> . ID
+    (43) factor -> . STRING_VALUE
+
+    LPAREN          shift and go to state 39
+    DIGIT           shift and go to state 47
+    ID              shift and go to state 48
+    STRING_VALUE    shift and go to state 49
+
+    factor                         shift and go to state 83
+
+state 69
+
+    (13) stmt -> WHILE LPAREN condition RPAREN . stmt
+    (9) stmt -> . assignment
+    (10) stmt -> . declaration
+    (11) stmt -> . IF LPAREN condition RPAREN stmt
+    (12) stmt -> . IF LPAREN condition RPAREN stmt ELSE stmt
+    (13) stmt -> . WHILE LPAREN condition RPAREN stmt
+    (14) stmt -> . LBRACE stmts RBRACE
+    (15) stmt -> . func
+    (32) assignment -> . ID ASSIGN expr
+    (33) assignment -> . ID ASSIGN func
+    (18) declaration -> . c_channel
+    (19) declaration -> . b_declaration
+    (20) declaration -> . s_declaration
+    (21) declaration -> . i_declaration
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (45) c_channel -> . CHANNEL ID ID ID
+    (46) b_declaration -> . BOOL ID
+    (47) s_declaration -> . STRING ID
+    (48) i_declaration -> . INT ID
+
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    LBRACE          shift and go to state 14
+    ID              shift and go to state 16
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    CHANNEL         shift and go to state 23
+    BOOL            shift and go to state 24
+    STRING          shift and go to state 25
+    INT             shift and go to state 26
+
+    stmt                           shift and go to state 84
+    assignment                     shift and go to state 10
+    declaration                    shift and go to state 11
+    func                           shift and go to state 15
+    c_channel                      shift and go to state 17
+    b_declaration                  shift and go to state 18
+    s_declaration                  shift and go to state 19
+    i_declaration                  shift and go to state 20
+
+state 70
+
+    (17) func -> OUTPUT LPAREN expr RPAREN .
+
+    IF              reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    WHILE           reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    LBRACE          reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    ID              reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    INPUT           reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    OUTPUT          reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    CHANNEL         reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    BOOL            reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    STRING          reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    INT             reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    SEQ_BLOCK       reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    PAR_BLOCK       reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    $end            reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    RBRACE          reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+    ELSE            reduce using rule 17 (func -> OUTPUT LPAREN expr RPAREN .)
+
+
+state 71
+
+    (45) c_channel -> CHANNEL ID ID ID .
+
+    IF              reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    WHILE           reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    LBRACE          reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    ID              reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    INPUT           reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    OUTPUT          reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    CHANNEL         reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    BOOL            reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    STRING          reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    INT             reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    SEQ_BLOCK       reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    PAR_BLOCK       reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    $end            reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    RBRACE          reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+    ELSE            reduce using rule 45 (c_channel -> CHANNEL ID ID ID .)
+
+
+state 72
+
+    (40) factor -> LPAREN expr RPAREN .
+
+    TIMES           reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    PLUS            reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    LE_THAN         reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    GE_THAN         reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    L_THAN          reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    G_THAN          reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    EQUAL           reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    NOT_EQUAL       reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    IF              reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    WHILE           reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    LBRACE          reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    ID              reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    INPUT           reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    OUTPUT          reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    CHANNEL         reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    BOOL            reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    STRING          reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    INT             reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    SEQ_BLOCK       reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    PAR_BLOCK       reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    $end            reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    RBRACE          reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+    ELSE            reduce using rule 40 (factor -> LPAREN expr RPAREN .)
+
+
+state 73
+
+    (11) stmt -> IF LPAREN condition RPAREN stmt .
+    (12) stmt -> IF LPAREN condition RPAREN stmt . ELSE stmt
+
+  ! shift/reduce conflict for ELSE resolved as shift
+    IF              reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    WHILE           reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    LBRACE          reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    ID              reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    INPUT           reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    OUTPUT          reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    CHANNEL         reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    BOOL            reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    STRING          reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    INT             reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    SEQ_BLOCK       reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    PAR_BLOCK       reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    $end            reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    RBRACE          reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .)
+    ELSE            shift and go to state 85
+
+  ! ELSE            [ reduce using rule 11 (stmt -> IF LPAREN condition RPAREN stmt .) ]
+
+
+state 74
+
+    (22) condition -> condition LE_THAN expr .
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    RPAREN          reduce using rule 22 (condition -> condition LE_THAN expr .)
+    LE_THAN         reduce using rule 22 (condition -> condition LE_THAN expr .)
+    GE_THAN         reduce using rule 22 (condition -> condition LE_THAN expr .)
+    L_THAN          reduce using rule 22 (condition -> condition LE_THAN expr .)
+    G_THAN          reduce using rule 22 (condition -> condition LE_THAN expr .)
+    EQUAL           reduce using rule 22 (condition -> condition LE_THAN expr .)
+    NOT_EQUAL       reduce using rule 22 (condition -> condition LE_THAN expr .)
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 75
+
+    (23) condition -> condition GE_THAN expr .
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    RPAREN          reduce using rule 23 (condition -> condition GE_THAN expr .)
+    LE_THAN         reduce using rule 23 (condition -> condition GE_THAN expr .)
+    GE_THAN         reduce using rule 23 (condition -> condition GE_THAN expr .)
+    L_THAN          reduce using rule 23 (condition -> condition GE_THAN expr .)
+    G_THAN          reduce using rule 23 (condition -> condition GE_THAN expr .)
+    EQUAL           reduce using rule 23 (condition -> condition GE_THAN expr .)
+    NOT_EQUAL       reduce using rule 23 (condition -> condition GE_THAN expr .)
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 76
+
+    (24) condition -> condition L_THAN expr .
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    RPAREN          reduce using rule 24 (condition -> condition L_THAN expr .)
+    LE_THAN         reduce using rule 24 (condition -> condition L_THAN expr .)
+    GE_THAN         reduce using rule 24 (condition -> condition L_THAN expr .)
+    L_THAN          reduce using rule 24 (condition -> condition L_THAN expr .)
+    G_THAN          reduce using rule 24 (condition -> condition L_THAN expr .)
+    EQUAL           reduce using rule 24 (condition -> condition L_THAN expr .)
+    NOT_EQUAL       reduce using rule 24 (condition -> condition L_THAN expr .)
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 77
+
+    (25) condition -> condition G_THAN expr .
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    RPAREN          reduce using rule 25 (condition -> condition G_THAN expr .)
+    LE_THAN         reduce using rule 25 (condition -> condition G_THAN expr .)
+    GE_THAN         reduce using rule 25 (condition -> condition G_THAN expr .)
+    L_THAN          reduce using rule 25 (condition -> condition G_THAN expr .)
+    G_THAN          reduce using rule 25 (condition -> condition G_THAN expr .)
+    EQUAL           reduce using rule 25 (condition -> condition G_THAN expr .)
+    NOT_EQUAL       reduce using rule 25 (condition -> condition G_THAN expr .)
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 78
+
+    (26) condition -> condition EQUAL expr .
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    RPAREN          reduce using rule 26 (condition -> condition EQUAL expr .)
+    LE_THAN         reduce using rule 26 (condition -> condition EQUAL expr .)
+    GE_THAN         reduce using rule 26 (condition -> condition EQUAL expr .)
+    L_THAN          reduce using rule 26 (condition -> condition EQUAL expr .)
+    G_THAN          reduce using rule 26 (condition -> condition EQUAL expr .)
+    EQUAL           reduce using rule 26 (condition -> condition EQUAL expr .)
+    NOT_EQUAL       reduce using rule 26 (condition -> condition EQUAL expr .)
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 79
+
+    (27) condition -> condition NOT_EQUAL expr .
+    (34) expr -> expr . PLUS term
+    (35) expr -> expr . MINUS term
+
+    RPAREN          reduce using rule 27 (condition -> condition NOT_EQUAL expr .)
+    LE_THAN         reduce using rule 27 (condition -> condition NOT_EQUAL expr .)
+    GE_THAN         reduce using rule 27 (condition -> condition NOT_EQUAL expr .)
+    L_THAN          reduce using rule 27 (condition -> condition NOT_EQUAL expr .)
+    G_THAN          reduce using rule 27 (condition -> condition NOT_EQUAL expr .)
+    EQUAL           reduce using rule 27 (condition -> condition NOT_EQUAL expr .)
+    NOT_EQUAL       reduce using rule 27 (condition -> condition NOT_EQUAL expr .)
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 66
+
+
+state 80
+
+    (34) expr -> expr PLUS term .
+    (37) term -> term . TIMES factor
+    (38) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 34 (expr -> expr PLUS term .)
+    MINUS           reduce using rule 34 (expr -> expr PLUS term .)
+    RPAREN          reduce using rule 34 (expr -> expr PLUS term .)
+    LE_THAN         reduce using rule 34 (expr -> expr PLUS term .)
+    GE_THAN         reduce using rule 34 (expr -> expr PLUS term .)
+    L_THAN          reduce using rule 34 (expr -> expr PLUS term .)
+    G_THAN          reduce using rule 34 (expr -> expr PLUS term .)
+    EQUAL           reduce using rule 34 (expr -> expr PLUS term .)
+    NOT_EQUAL       reduce using rule 34 (expr -> expr PLUS term .)
+    IF              reduce using rule 34 (expr -> expr PLUS term .)
+    WHILE           reduce using rule 34 (expr -> expr PLUS term .)
+    LBRACE          reduce using rule 34 (expr -> expr PLUS term .)
+    ID              reduce using rule 34 (expr -> expr PLUS term .)
+    INPUT           reduce using rule 34 (expr -> expr PLUS term .)
+    OUTPUT          reduce using rule 34 (expr -> expr PLUS term .)
+    CHANNEL         reduce using rule 34 (expr -> expr PLUS term .)
+    BOOL            reduce using rule 34 (expr -> expr PLUS term .)
+    STRING          reduce using rule 34 (expr -> expr PLUS term .)
+    INT             reduce using rule 34 (expr -> expr PLUS term .)
+    SEQ_BLOCK       reduce using rule 34 (expr -> expr PLUS term .)
+    PAR_BLOCK       reduce using rule 34 (expr -> expr PLUS term .)
+    $end            reduce using rule 34 (expr -> expr PLUS term .)
+    RBRACE          reduce using rule 34 (expr -> expr PLUS term .)
+    ELSE            reduce using rule 34 (expr -> expr PLUS term .)
+    TIMES           shift and go to state 67
+    DIVIDE          shift and go to state 68
+
+
+state 81
+
+    (35) expr -> expr MINUS term .
+    (37) term -> term . TIMES factor
+    (38) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 35 (expr -> expr MINUS term .)
+    MINUS           reduce using rule 35 (expr -> expr MINUS term .)
+    RPAREN          reduce using rule 35 (expr -> expr MINUS term .)
+    LE_THAN         reduce using rule 35 (expr -> expr MINUS term .)
+    GE_THAN         reduce using rule 35 (expr -> expr MINUS term .)
+    L_THAN          reduce using rule 35 (expr -> expr MINUS term .)
+    G_THAN          reduce using rule 35 (expr -> expr MINUS term .)
+    EQUAL           reduce using rule 35 (expr -> expr MINUS term .)
+    NOT_EQUAL       reduce using rule 35 (expr -> expr MINUS term .)
+    IF              reduce using rule 35 (expr -> expr MINUS term .)
+    WHILE           reduce using rule 35 (expr -> expr MINUS term .)
+    LBRACE          reduce using rule 35 (expr -> expr MINUS term .)
+    ID              reduce using rule 35 (expr -> expr MINUS term .)
+    INPUT           reduce using rule 35 (expr -> expr MINUS term .)
+    OUTPUT          reduce using rule 35 (expr -> expr MINUS term .)
+    CHANNEL         reduce using rule 35 (expr -> expr MINUS term .)
+    BOOL            reduce using rule 35 (expr -> expr MINUS term .)
+    STRING          reduce using rule 35 (expr -> expr MINUS term .)
+    INT             reduce using rule 35 (expr -> expr MINUS term .)
+    SEQ_BLOCK       reduce using rule 35 (expr -> expr MINUS term .)
+    PAR_BLOCK       reduce using rule 35 (expr -> expr MINUS term .)
+    $end            reduce using rule 35 (expr -> expr MINUS term .)
+    RBRACE          reduce using rule 35 (expr -> expr MINUS term .)
+    ELSE            reduce using rule 35 (expr -> expr MINUS term .)
+    TIMES           shift and go to state 67
+    DIVIDE          shift and go to state 68
+
+
+state 82
+
+    (37) term -> term TIMES factor .
+
+    TIMES           reduce using rule 37 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 37 (term -> term TIMES factor .)
+    PLUS            reduce using rule 37 (term -> term TIMES factor .)
+    MINUS           reduce using rule 37 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 37 (term -> term TIMES factor .)
+    LE_THAN         reduce using rule 37 (term -> term TIMES factor .)
+    GE_THAN         reduce using rule 37 (term -> term TIMES factor .)
+    L_THAN          reduce using rule 37 (term -> term TIMES factor .)
+    G_THAN          reduce using rule 37 (term -> term TIMES factor .)
+    EQUAL           reduce using rule 37 (term -> term TIMES factor .)
+    NOT_EQUAL       reduce using rule 37 (term -> term TIMES factor .)
+    IF              reduce using rule 37 (term -> term TIMES factor .)
+    WHILE           reduce using rule 37 (term -> term TIMES factor .)
+    LBRACE          reduce using rule 37 (term -> term TIMES factor .)
+    ID              reduce using rule 37 (term -> term TIMES factor .)
+    INPUT           reduce using rule 37 (term -> term TIMES factor .)
+    OUTPUT          reduce using rule 37 (term -> term TIMES factor .)
+    CHANNEL         reduce using rule 37 (term -> term TIMES factor .)
+    BOOL            reduce using rule 37 (term -> term TIMES factor .)
+    STRING          reduce using rule 37 (term -> term TIMES factor .)
+    INT             reduce using rule 37 (term -> term TIMES factor .)
+    SEQ_BLOCK       reduce using rule 37 (term -> term TIMES factor .)
+    PAR_BLOCK       reduce using rule 37 (term -> term TIMES factor .)
+    $end            reduce using rule 37 (term -> term TIMES factor .)
+    RBRACE          reduce using rule 37 (term -> term TIMES factor .)
+    ELSE            reduce using rule 37 (term -> term TIMES factor .)
+
+
+state 83
+
+    (38) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 38 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 38 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 38 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 38 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 38 (term -> term DIVIDE factor .)
+    LE_THAN         reduce using rule 38 (term -> term DIVIDE factor .)
+    GE_THAN         reduce using rule 38 (term -> term DIVIDE factor .)
+    L_THAN          reduce using rule 38 (term -> term DIVIDE factor .)
+    G_THAN          reduce using rule 38 (term -> term DIVIDE factor .)
+    EQUAL           reduce using rule 38 (term -> term DIVIDE factor .)
+    NOT_EQUAL       reduce using rule 38 (term -> term DIVIDE factor .)
+    IF              reduce using rule 38 (term -> term DIVIDE factor .)
+    WHILE           reduce using rule 38 (term -> term DIVIDE factor .)
+    LBRACE          reduce using rule 38 (term -> term DIVIDE factor .)
+    ID              reduce using rule 38 (term -> term DIVIDE factor .)
+    INPUT           reduce using rule 38 (term -> term DIVIDE factor .)
+    OUTPUT          reduce using rule 38 (term -> term DIVIDE factor .)
+    CHANNEL         reduce using rule 38 (term -> term DIVIDE factor .)
+    BOOL            reduce using rule 38 (term -> term DIVIDE factor .)
+    STRING          reduce using rule 38 (term -> term DIVIDE factor .)
+    INT             reduce using rule 38 (term -> term DIVIDE factor .)
+    SEQ_BLOCK       reduce using rule 38 (term -> term DIVIDE factor .)
+    PAR_BLOCK       reduce using rule 38 (term -> term DIVIDE factor .)
+    $end            reduce using rule 38 (term -> term DIVIDE factor .)
+    RBRACE          reduce using rule 38 (term -> term DIVIDE factor .)
+    ELSE            reduce using rule 38 (term -> term DIVIDE factor .)
+
+
+state 84
+
+    (13) stmt -> WHILE LPAREN condition RPAREN stmt .
+
+    IF              reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    WHILE           reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    LBRACE          reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    ID              reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    INPUT           reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    OUTPUT          reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    CHANNEL         reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    BOOL            reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    STRING          reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    INT             reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    SEQ_BLOCK       reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    PAR_BLOCK       reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    $end            reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    RBRACE          reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+    ELSE            reduce using rule 13 (stmt -> WHILE LPAREN condition RPAREN stmt .)
+
+
+state 85
+
+    (12) stmt -> IF LPAREN condition RPAREN stmt ELSE . stmt
+    (9) stmt -> . assignment
+    (10) stmt -> . declaration
+    (11) stmt -> . IF LPAREN condition RPAREN stmt
+    (12) stmt -> . IF LPAREN condition RPAREN stmt ELSE stmt
+    (13) stmt -> . WHILE LPAREN condition RPAREN stmt
+    (14) stmt -> . LBRACE stmts RBRACE
+    (15) stmt -> . func
+    (32) assignment -> . ID ASSIGN expr
+    (33) assignment -> . ID ASSIGN func
+    (18) declaration -> . c_channel
+    (19) declaration -> . b_declaration
+    (20) declaration -> . s_declaration
+    (21) declaration -> . i_declaration
+    (16) func -> . INPUT LPAREN RPAREN
+    (17) func -> . OUTPUT LPAREN expr RPAREN
+    (45) c_channel -> . CHANNEL ID ID ID
+    (46) b_declaration -> . BOOL ID
+    (47) s_declaration -> . STRING ID
+    (48) i_declaration -> . INT ID
+
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    LBRACE          shift and go to state 14
+    ID              shift and go to state 16
+    INPUT           shift and go to state 21
+    OUTPUT          shift and go to state 22
+    CHANNEL         shift and go to state 23
+    BOOL            shift and go to state 24
+    STRING          shift and go to state 25
+    INT             shift and go to state 26
+
+    stmt                           shift and go to state 86
+    assignment                     shift and go to state 10
+    declaration                    shift and go to state 11
+    func                           shift and go to state 15
+    c_channel                      shift and go to state 17
+    b_declaration                  shift and go to state 18
+    s_declaration                  shift and go to state 19
+    i_declaration                  shift and go to state 20
+
+state 86
+
+    (12) stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .
+
+    IF              reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    WHILE           reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    LBRACE          reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    ID              reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    INPUT           reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    OUTPUT          reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    CHANNEL         reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    BOOL            reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    STRING          reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    INT             reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    SEQ_BLOCK       reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    PAR_BLOCK       reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    $end            reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    RBRACE          reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+    ELSE            reduce using rule 12 (stmt -> IF LPAREN condition RPAREN stmt ELSE stmt .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ELSE in state 73 resolved as shift

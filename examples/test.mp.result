@@ -1,0 +1,1 @@
+('seqBlock', ((((('declaration', 'int', 'variavel'), ('assign', 'variavel', ('term', ('term', 1, '*', 2), '/', 2))), ('assign', 'variavel', 'resultado')), ('if', ('condition', 'variavel', '>', 10), ('assign', 'resultado', 20))), ('assign', 'variavel', ('expr', 4, '+', ('term', 5, '*', 3)))))
