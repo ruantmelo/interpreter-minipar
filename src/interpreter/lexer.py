@@ -72,7 +72,7 @@ class Lexer(ILexer):
 
     def t_ID(self, t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'
-        print('id/reserved: ', t, self.reserved.get(t.value,'ID'))
+       
         t.type = self.reserved.get(t.value,'ID')    # Check for reserved words
         
         if (t.type == 'TRUE'):

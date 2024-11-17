@@ -11,7 +11,6 @@ class Interpreter:
 
   def run(self):
     parse_tree = self.parser.parsing(self.program)
-    print(parse_tree)
     self.executor.execute(parse_tree)
   
 

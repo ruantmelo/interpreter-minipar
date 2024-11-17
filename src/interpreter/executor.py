@@ -13,7 +13,6 @@ class Executor(ExecutorInterface):
         self.symbol_table = Symbol_Table()
 
     def execute(self, parse_tree):
-        print('executing', parse_tree)
 
         if (type(parse_tree) != tuple):
             if (type(parse_tree) == str):
@@ -81,16 +80,15 @@ class Executor(ExecutorInterface):
                 host_address = addresses[0]
                 target_address = addresses[1]
 
-                print("channelMethod", parse_tree)
                 
                 #se for send
                 if (parse_tree[2][0] == 'send'):
-                    print('Enviando dados', parse_tree)
+                   
                     if (len(parse_tree[2]) == 2):
-                        print("SERVIDOR ENVIANDO RESULTADO")
+                     
                         self.send_data(str(self.execute(parse_tree[2][1])),(target_address, PORT_A))
                     else:
-                        print("CLIENTE ENVIANDO OPERAÇÃO")
+                      
                         operador = self.execute(parse_tree[2][1])
                         operandoA = parse_tree[2][2]
                         operandoB = parse_tree[2][3]
@@ -98,20 +96,18 @@ class Executor(ExecutorInterface):
                         self.send_data(result, (target_address, PORT_B))
                     #se for receive    
                 else:
-                    print("Recebendo dados")
+    
 
                     if (len(parse_tree[2]) == 2):
-                        print("CLIENTE RECEBENDO DADOS")
+                      
                         value = self.receive_data((host_address, PORT_A))
                         self.symbol_table.update(parse_tree[2][1], value)
                     else:
-                        print("SERVIDOR RECEBENDO A OPERAÇÃO")
-                        print("addresses: ", addresses)
+                       
                         value = self.receive_data((host_address, PORT_B))
                         ops = value.split(" ")
 
-                        print('ops ', ops)
-
+                        
                         operador = ops[0]
                         operandoA = int(ops[1])
                         operandoB = int(ops[2])
@@ -133,7 +129,7 @@ class Executor(ExecutorInterface):
                 # ('assign', 'variavel', ('expr', 1, '+', 2))
                 key = parse_tree[1]
 
-                print('assign', parse_tree)
+               
                 if type(parse_tree[2]) == tuple:
                         value = self.execute(parse_tree[2])
                 else:
@@ -144,26 +140,26 @@ class Executor(ExecutorInterface):
                     value = self.execute(parse_tree[1])
                     value =  value[1] if type(value) == tuple else value
 
-                    print('=============== output: ', value)
+                    print('output: ', value)
                 else:
                     print(parse_tree[1])
             case 'input':
                 value = input("enter value: ")
                 return value
             case 'ID':
-                print('gettind id', parse_tree[1], self.symbol_table.get(parse_tree[1]))
+              
                 return self.symbol_table.get(parse_tree[1])[1]
             case 'STRING': 
                 return self.execute(parse_tree[1])
             
             case _:
-                print('not implemented yet', parse_tree)
+               
                 return 0
             
     def send_data(self, data, address):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            print("Connecting to server ", address[0], " at port ", address[1])
+            print("Connecting to server " , address[0], " at port ", address[1])
             sock.connect(address)
             sock.sendall(data.encode())
         finally:
@@ -173,7 +169,7 @@ class Executor(ExecutorInterface):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         try:
-            print("Listening to ", address[0], " at port ", address[1])
+            print("Listening to server " , address[0], " at port ", address[1])
             sock.bind(address)
 
             sock.listen(2)
@@ -185,7 +181,7 @@ class Executor(ExecutorInterface):
                     break
 
                 return data.decode()
-                clientSock.close()            
+                        
         finally:
 
             sock.close()
@@ -210,7 +206,6 @@ class Executor(ExecutorInterface):
                 # if (type(value_b) == tuple):
                 #     value_b = value_b[1]
 
-        print('values ', value_a, value_b)
 
         match parse_tree[2]:
             case '==':
@@ -229,18 +224,15 @@ class Executor(ExecutorInterface):
         return False
 
     def execute_expr(self, parse_tree): # ('expr', 1, '+', 2)
-        print("executing expr ", parse_tree)
         if type(parse_tree) == int:
             return parse_tree
         if type(parse_tree) == str: # TODO: Como fica pra variável e pra string?
             return self.symbol_table.get(parse_tree)
         if type(parse_tree) == tuple:
-            print('TUPLAZINHA', parse_tree)
             if len(parse_tree) == 4:
                 a = self.execute(parse_tree[1]) if type(parse_tree[1]) == tuple else parse_tree[1] 
                 b = self.execute(parse_tree[3]) if type(parse_tree[3]) == tuple else parse_tree[3] 
 
-                print('tup values ', a, b)
                 match parse_tree[2]:
                     case '+':
                         return a + b

@@ -156,7 +156,7 @@ class Parser(IParser):
         if len(p) == 4:
             p[0] = p[2]
         else:
-            print("factor carai ", p[1])
+           
             if(type(p[1]) == int):
                 p[0] = p[1]
             elif(type(p[1]) == bool):

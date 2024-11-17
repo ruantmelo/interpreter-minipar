@@ -20,3 +20,13 @@ class ExecutorInterface(ABC):
     def execute_term(self, parse_tree):
         """Executa um termo."""
         pass
+
+    @abstractmethod
+    def send_data(self, data: str, address: tuple):
+        """Envia um dado."""
+        pass
+
+    @abstractmethod
+    def receive_data(self, address: tuple) -> str:
+        """Recebe um dado."""
+        pass
