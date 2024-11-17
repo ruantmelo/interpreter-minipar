@@ -27,19 +27,19 @@ class InterpretadorMiniParApp:
         self.btn_execucao = tk.Button(root, text="Executar", font=("Arial", 14), command=self.executar_programa, bg="#4CAF50", fg="white", bd=0, relief="raised", padx=20, pady=10)
         self.btn_execucao.pack(pady=20)
 
-    # Função que será chamada quando o botão "Execução" for pressionado
     def executar_programa(self):
-        programa = self.txt_programa.get("1.0", tk.END).strip()  # Pega o conteúdo da emtrada
+        programa = self.txt_programa.get("1.0", tk.END).strip()  # Pega o conteúdo da entrada
         
         if programa:
-            # Aqui envia a entrada pro programa MiniPar e pega a saída
-            saida = "teste de retorno do programa : " + programa 
-            
+            # Cria um parser e processa o programa
+            parser = Parser()
+            resultado = parser.parsing(programa)
+
+            # Exibe o resultado na área de saída
             self.txt_saida.delete(1.0, tk.END)  # Limpa a saída anterior
-            self.txt_saida.insert(tk.END, saida)  # Insere o resultado da execução na área de saída
+            self.txt_saida.insert(tk.END, resultado)  # Insere o resultado da execução
         else:
             messagebox.showwarning("Aviso", "Por favor, insira uma entrada não vazia.")
-
 
 class Main:
     def __init__(self):
@@ -54,4 +54,4 @@ class Main:
 # Criando e executando a aplicação
 if __name__ == "__main__":
     main_app = Main() 
-    main_app.run() 
+    main_app.run()

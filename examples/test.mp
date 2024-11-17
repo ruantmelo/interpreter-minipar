@@ -1,10 +1,14 @@
 SEQ
     int variavel
     variavel = 2
-    if (variavel > 10)
+
+    if (variavel >= 2)
     {
-        resultado = 20
+        variavel = 20
     }
 
-    output(variavel)
+    bool teste
+    teste = true
+
+    output(teste)
 
