@@ -1,26 +1,36 @@
-from interfaces.interface_parser import IParser
-from lexer import Lexer
 import logging
 import ply.yacc as yacc
 
+from interfaces.interface_parser import IParser
+from interpreter.lexer import Lexer
 
-logging.basicConfig(
-    level = logging.DEBUG,
-    filename = "parselog.txt",
-    filemode = "w",
-    format = "%(filename)10s:%(lineno)4d:%(message)s"
-)
-log = logging.getLogger()
+# logging.basicConfig(
+#     level = logging.DEBUG,
+#     filename = "parselog.txt",
+#     filemode = "w",
+#     format = "%(filename)10s:%(lineno)4d:%(message)s"
+# )
+# log = logging.getLogger()
 
 class Parser(IParser):
     
-    def __init__(self):
+    def __init__(self, logger=None):
         self.lexer = Lexer()
         self.tokens = self.lexer.tokens
         self.parser = yacc.yacc(module=self)
+        self.logger = logger
 
     def parsing(self, program):
-        result = self.parser.parse(program, debug=log)
+
+        if self.logger:
+            self.logger.log("Parsing program...")
+
+        result = self.parser.parse(program)
+
+        if self.logger:
+            self.logger.success("Parsing successful")
+            self.logger.log("Result: " + str(result))
+            
         return result
     
     def p_stmt_block(self, p):

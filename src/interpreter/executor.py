@@ -1,6 +1,5 @@
-import logging
 import socket
-from symbol_table import Symbol_Table
+from interpreter.symbol_table import Symbol_Table
 import threading
 from interfaces.interface_execute import ExecutorInterface
 
@@ -8,8 +7,8 @@ PORT_A = 8000
 PORT_B = 8001
 
 class Executor(ExecutorInterface):
-    def __init__(self):
-       
+    def __init__(self, logger=None):
+        self.logger = logger
         self.symbol_table = Symbol_Table()
 
     def execute(self, parse_tree):
@@ -139,7 +138,7 @@ class Executor(ExecutorInterface):
                 if type(parse_tree[1]) == tuple:
                     value = self.execute(parse_tree[1])
                     value =  value[1] if type(value) == tuple else value
-
+                    self.logger.log(f'Output: {value}')
                     print('output: ', value)
                 else:
                     print(parse_tree[1])

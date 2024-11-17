@@ -1,57 +1,65 @@
-import tkinter as tk
+from tkinter import *
 from tkinter import messagebox
 
+from interfaces.interface_parser import IParser
+from interfaces.interface_execute import ExecutorInterface
+from interpreter.tklogger import TkLogger
 
-class InterpretadorMiniParApp:
-    def __init__(self, root):
-        # Configuração da janela principal
-        self.root = root
-        self.root.title("Interpretador MiniPar")
-        self.root.geometry("600x600")
+class InterpreterGUI:
+    def __init__(self, Parser: IParser, Executor: ExecutorInterface):
+        self._root = self._gui_config()
+        self._logger = TkLogger(self.txt_output)
 
-        # Configuração do título
-        self.label_programa = tk.Label(root, text="Interpretador de Linguagem MINIPAR", font=("Arial", 16, "bold"), bg="#f0f0f0", fg="#333")
-        self.label_programa.pack(pady=10)
+        self._parser = Parser(logger=self._logger)
+        self._executor = Executor(logger=self._logger)
 
-        self.txt_programa = tk.Text(root, height=10, width=70)
-        self.txt_programa.pack(pady=10)
+        self._root.mainloop()
 
-        # Quadrado para saída
-        self.label_saida = tk.Label(root, text="SAÍDA", font=("Arial", 16, "bold"), bg="#f0f0f0", fg="#333")
-        self.label_saida.pack(pady=10)
-
-        self.txt_saida = tk.Text(root, height=10, width=70)
-        self.txt_saida.pack(pady=10)
-
-        # Botão de execução
-        self.btn_execucao = tk.Button(root, text="Executar", font=("Arial", 14), command=self.executar_programa, bg="#4CAF50", fg="white", bd=0, relief="raised", padx=20, pady=10)
-        self.btn_execucao.pack(pady=20)
-
-    def executar_programa(self):
-        programa = self.txt_programa.get("1.0", tk.END).strip()  # Pega o conteúdo da entrada
+    def execute_source(self):
+        source = self.editor.get("1.0", END).strip()  # Pega o conteúdo da entrada
         
-        if programa:
-            # Cria um parser e processa o programa
-            parser = Parser()
-            resultado = parser.parsing(programa)
+        if source:
+            parse_tree = self._parser.parsing(source)
+            self._executor.execute(parse_tree)
 
             # Exibe o resultado na área de saída
-            self.txt_saida.delete(1.0, tk.END)  # Limpa a saída anterior
-            self.txt_saida.insert(tk.END, resultado)  # Insere o resultado da execução
+            # self.txt_saida.delete(1.0, END)  # Limpa a saída anterior
+            # self.txt_saida.insert(END, resultado)  # Insere o resultado da execução
         else:
             messagebox.showwarning("Aviso", "Por favor, insira uma entrada não vazia.")
 
-class Main:
-    def __init__(self):
-        # Inicializa a aplicação
-        self.root = tk.Tk()
-        self.app = InterpretadorMiniParApp(self.root)
+    def _gui_config(self):
+        root = Tk()
+        root.title("Interpretador MiniPar")
+        root.geometry("600x600")
 
-    def run(self):
-        # Executa a interface gráfica
-        self.root.mainloop()
+        # Configuração do título
+        label_app = Label(root, text="Interpretador de Linguagem MINIPAR", font=("Arial", 16, "bold"), bg="#f0f0f0", fg="#333")
+        label_app.pack(pady=10)
 
-# Criando e executando a aplicação
-if __name__ == "__main__":
-    main_app = Main() 
-    main_app.run()
+        self.editor = Text(root, height=10, width=70)
+        self.editor.pack(pady=10)
+
+        # Quadrado para saída
+        label_output = Label(root, text="SAÍDA", font=("Arial", 16, "bold"), bg="#f0f0f0", fg="#333")
+        label_output.pack(pady=10)
+
+        self.txt_output = Text(root, state='disabled', height=10, width=70)
+        self.txt_output.pack(pady=10)
+ 
+        # Botão de execução
+        btn_execute = Button(root, text="Executar", font=("Arial", 14), command=self.execute_source, bg="#4CAF50", fg="white", bd=0, relief="raised", padx=20, pady=10)
+        btn_execute.pack(pady=20)
+
+        return root
+# class Main:
+#     def __init__(self):
+
+#     def run(self):
+#         # Executa a interface gráfica
+#         self.root.mainloop()
+
+# # Criando e executando a aplicação
+# if __name__ == "__main__":
+#     main_app = Main() 
+#     main_app.run()
