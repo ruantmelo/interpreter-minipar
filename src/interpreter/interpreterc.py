@@ -1,3 +1,5 @@
+import os
+
 from parser import Parser
 from executor import Executor
 
@@ -14,8 +16,9 @@ class Interpreter:
   
 
 if __name__ == '__main__':
-  source = ''
+  source = os.path.join(os.path.dirname(__file__), '..', '..', 'examples', 'test5-client.mp')
 
+  print("Source: ", source)
   with open(source, 'r') as file:
     source = file.read()
     interpreter = Interpreter(source)

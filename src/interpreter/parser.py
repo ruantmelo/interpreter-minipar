@@ -1,8 +1,7 @@
-from interfaceparser import IParser
+from interfaces.interface_parser import IParser
+from lexer import Lexer
 import logging
 import ply.yacc as yacc
-
-
 
 
 logging.basicConfig(
@@ -16,7 +15,6 @@ log = logging.getLogger()
 class Parser(IParser):
     
     def __init__(self):
-        from lexer import Lexer
         self.lexer = Lexer()
         self.tokens = self.lexer.tokens
         self.parser = yacc.yacc(module=self)
@@ -74,12 +72,36 @@ class Parser(IParser):
             
     def p_func(self, p):
         '''func : INPUT LPAREN RPAREN
-                | OUTPUT LPAREN expr RPAREN'''
+                | OUTPUT LPAREN expr RPAREN
+                | chan'''
         if (len(p)==5):
             p[0] = ('output', p[3])
         else:
             p[0] = (p[1])
 
+    def p_chan(self, p):
+        '''chan : ID DOT send_stmt
+                | ID DOT receive_stmt'''
+        p[0] = ('channelMethod', p[1], p[3])
+        # send operador operandoA operandoB resultado
+        # receive resultado
+
+        # 
+    def p_send_stmt(self, p):
+        '''send_stmt : SEND LPAREN expr RPAREN
+                    | SEND LPAREN expr COMMA expr COMMA expr RPAREN'''
+        if len(p) == 5:
+            p[0] = (p[1],p[3])
+        else:
+            p[0] = (p[1], p[3], p[5], p[7])
+
+    def p_receive_stmt(self, p):
+        '''receive_stmt : RECEIVE LPAREN ID RPAREN
+                    | RECEIVE LPAREN ID COMMA ID COMMA ID RPAREN'''
+        if len(p) == 5:
+            p[0] = (p[1],p[3])
+        else:
+            p[0] = (p[1], p[3], p[5], p[7])
 
     def p_declaration(self, p):
         '''declaration  : c_channel
@@ -95,18 +117,11 @@ class Parser(IParser):
                     | condition G_THAN expr
                     | condition EQUAL expr
                     | condition NOT_EQUAL expr
-                    | bool_val
-                    | expr'''
+                    | expr''' # Retirei o bool_val daqui
         if len(p)==4:
             p[0] = ('condition', p[1], p[2], p[3])
         else:
             p[0] = p[1]
-
-    def p_bool_val(self, p):
-        '''bool_val : TRUE
-                | FALSE'''
-        p[0] = p[1]
-
     def p_assignment(self, p):
         '''assignment : ID ASSIGN expr
                     | ID ASSIGN func'''
@@ -116,6 +131,7 @@ class Parser(IParser):
         '''expr : expr PLUS term
                 | expr MINUS term
                 | term'''
+        
         if len(p) == 4:
             p[0] = ('expr', p[1], p[2], p[3])
         else:
@@ -134,24 +150,40 @@ class Parser(IParser):
         '''factor : LPAREN expr RPAREN
                     | DIGIT
                     | ID
-                    | STRING_VALUE'''
+                    | STRING_VALUE
+                    | bool_val
+                    '''
         if len(p) == 4:
             p[0] = p[2]
         else:
+            print("factor carai ", p[1])
             if(type(p[1]) == int):
+                p[0] = p[1]
+            elif(type(p[1]) == bool):
                 p[0] = p[1]
             elif(p[1][0] == '"'):
                 p[0] = ('STRING', p[1])
             else:
                 p[0] = ('ID', p[1])
 
+    def p_bool_val(self, p):
+        '''bool_val : TRUE
+                | FALSE'''
+        p[0] = p[1]
+
     def p_empty(self, p):
         'empty : '
         pass
 
     def p_c_channel(self, p):
-        'c_channel : CHANNEL ID ID ID'
-        p[0] = ('declaration', p[1], p[2], p[3], p[4])
+        '''c_channel : CHANNEL ID LPAREN address COMMA address RPAREN'''
+
+        p[0] = ('declaration', p[1], p[2], p[4], p[6])
+
+    def p_address(self, p):
+        '''address  : ID
+                | STRING_VALUE'''
+        p[0] = p[1]
 
     def p_b_declaration(self, p):
         'b_declaration : BOOL ID'

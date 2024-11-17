@@ -1,10 +1,14 @@
-from os import listdir
-from src.parser import Parser
+import os
+from interpreter.parser import Parser
 
 if __name__ == '__main__':
-  examples_folder = 's'
+  examples_folder = os.path.join(os.path.dirname(__file__), '..', 'examples')
 
-  files = listdir(examples_folder)[:1]
+  # Diretório atual .. examples 
+
+  # path.sdad(_dirname_, '..', 'examples)
+
+  files = os.listdir(examples_folder)[:1]
 
   for filename in files:
     with open(f'{examples_folder}/{filename}', 'r') as file:

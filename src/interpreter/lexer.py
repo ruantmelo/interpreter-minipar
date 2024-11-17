@@ -1,5 +1,5 @@
 import ply.lex as lex
-from Interfacelexer import ILexer
+from interfaces.interface_lexer import ILexer
 
 
 class Lexer(ILexer):
@@ -22,7 +22,9 @@ class Lexer(ILexer):
             'SEQ' : 'SEQ_BLOCK',
             'PAR' : 'PAR_BLOCK',
             'input' : 'INPUT',
-            'output' : 'OUTPUT'
+            'output' : 'OUTPUT',
+            'send' : 'SEND',
+            'receive' : 'RECEIVE'
         }
         
         # List of token names.   This is always required
@@ -45,6 +47,8 @@ class Lexer(ILexer):
             'ASSIGN',
             'LBRACE',
             'RBRACE',
+            'DOT',
+            'COMMA',
         ) + tuple(self.reserved.values())
 
     # Regular expression rules for simple tokens
@@ -63,11 +67,19 @@ class Lexer(ILexer):
     t_ASSIGN = r'='
     t_LBRACE = r'\{'
     t_RBRACE = r'\}'
-
+    t_DOT = r'\.'
+    t_COMMA = r','
 
     def t_ID(self, t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'
+        print('id/reserved: ', t, self.reserved.get(t.value,'ID'))
         t.type = self.reserved.get(t.value,'ID')    # Check for reserved words
+        
+        if (t.type == 'TRUE'):
+            t.value = True
+        elif (t.type == "FALSE"):
+            t.value = False
+        
         return t
 
     # A regular expression rule with some action code
