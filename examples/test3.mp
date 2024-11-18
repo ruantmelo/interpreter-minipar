@@ -12,6 +12,7 @@ SEQ
     curr = 1
 
     int temp
+    
     while (i < n)
     {
         temp = curr

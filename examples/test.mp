@@ -7,8 +7,5 @@ SEQ
         variavel = 20
     }
 
-    bool teste
-    teste = true
-
-    output(teste)
+    output(variavel)
 

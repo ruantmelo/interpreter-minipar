@@ -4,7 +4,7 @@ from interpreter.executor import Executor
 from ui.index import InterpreterGUI
 
 def main():
-  gui = InterpreterGUI(Parser=Parser, Executor=Executor)
+  gui = InterpreterGUI()
 
 if __name__ == '__main__':
   main()

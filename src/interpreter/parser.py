@@ -26,11 +26,6 @@ class Parser(IParser):
             self.logger.log("Parsing program...")
 
         result = self.parser.parse(program)
-
-        if self.logger:
-            self.logger.success("Parsing successful")
-            self.logger.log("Result: " + str(result))
-            
         return result
     
     def p_stmt_block(self, p):
@@ -57,6 +52,7 @@ class Parser(IParser):
         if len(p) == 3:
             p[0] = (p[1], p[2])
         elif len(p) == 2:
+            
             p[0] = p[1]
 
     def p_stmt(self, p):
@@ -85,9 +81,9 @@ class Parser(IParser):
                 | OUTPUT LPAREN expr RPAREN
                 | chan'''
         if (len(p)==5):
-            p[0] = ('output', p[3])
+            p[0] = ('func', 'output', p[3])
         else:
-            p[0] = (p[1])
+            p[0] = ('func', p[1])
 
     def p_chan(self, p):
         '''chan : ID DOT send_stmt
@@ -210,25 +206,3 @@ class Parser(IParser):
     # Error rule for syntax errors
     def p_error(self, p):
         print("Syntax error in input!")
-
-# Build the parser
-# parser = yacc.yacc(module=Parser)
-
-print("Builded parser")
-
-# if __name__ == '__main__':
-#   file_path = 'examples/test.mp'
-#   with open(file_path, 'r') as file:
-#     program = file.read()
-#     parser = Parser().parser
-#     result = parser.parse(program, debug=log)
-#     print(result) 
-
-# while True:
-#    try:
-#        s = input('calc > ')
-#    except EOFError:
-#        break
-#    if not s: continue
-#    result = parser.parse(s)
-#    print(result)

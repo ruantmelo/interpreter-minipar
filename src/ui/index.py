@@ -5,23 +5,25 @@ from interfaces.interface_parser import IParser
 from interfaces.interface_execute import ExecutorInterface
 from interpreter.tklogger import TkLogger
 
+from interpreter.interpreterc import Interpreter
+
+from interpreter.parser import Parser
+from interpreter.executor import Executor
+
 class InterpreterGUI:
-    def __init__(self, Parser: IParser, Executor: ExecutorInterface):
+    def __init__(self):
         self._root = self._gui_config()
         self._logger = TkLogger(self.txt_output)
-
-        self._parser = Parser(logger=self._logger)
-        self._executor = Executor(logger=self._logger)
+        self._interpreter = Interpreter(logger=self._logger, Parser=Parser, Executor=Executor)
+        
 
         self._root.mainloop()
 
     def execute_source(self):
         source = self.editor.get("1.0", END).strip()  # Pega o conteúdo da entrada
-        
+       
         if source:
-            parse_tree = self._parser.parsing(source)
-            self._executor.execute(parse_tree)
-
+            self._interpreter.run(source)
             # Exibe o resultado na área de saída
             # self.txt_saida.delete(1.0, END)  # Limpa a saída anterior
             # self.txt_saida.insert(END, resultado)  # Insere o resultado da execução

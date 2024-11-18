@@ -11,8 +11,10 @@ class Executor(ExecutorInterface):
         self.logger = logger
         self.symbol_table = Symbol_Table()
 
-    def execute(self, parse_tree):
+    def reset(self):
+        self.symbol_table = Symbol_Table()
 
+    def execute(self, parse_tree):
         if (type(parse_tree) != tuple):
             if (type(parse_tree) == str):
                 return parse_tree[1:-1]
@@ -46,22 +48,21 @@ class Executor(ExecutorInterface):
                         self.execute(s)
             case 'declaration': # ('declaration', <type>, <ID>)('declaration', 'int', 'variavel')
                 # Verifica se p2 existe na tabela de simbolos
-                
                 value = self.symbol_table.get(parse_tree[2])
             
-               
-
                 # Se sim, lança erro
                 if (value != None):
                     raise Exception("Symbol already declared")
                 
                 if (parse_tree[1] == 'chan'):
-                    #Pega o endereço
+                    # Pega o endereço
                     host_address = self.execute(parse_tree[3])
                     target_address = self.execute(parse_tree[4])
-                    #tupla com o endereço
+
+                    # tupla com o endereço
                     myAddress = host_address
                     server_address = target_address
+
                     #armazena na tabela de simbolos o endereço
                     self.symbol_table.insert(parse_tree[2], parse_tree[1])
                     self.symbol_table.update(parse_tree[2], (myAddress, server_address))
@@ -72,47 +73,22 @@ class Executor(ExecutorInterface):
                 # send_stmt : SEND LPAREN expr RPAREN
                 #     | SEND LPAREN expr COMMA expr COMMA expr RPAREN
 
-            
-            case 'channelMethod':
-                addresses = self.symbol_table.get(parse_tree[1])
-                addresses = addresses[1]
-                host_address = addresses[0]
-                target_address = addresses[1]
-
-                
-                #se for send
-                if (parse_tree[2][0] == 'send'):
-                   
-                    if (len(parse_tree[2]) == 2):
-                     
-                        self.send_data(str(self.execute(parse_tree[2][1])),(target_address, PORT_A))
+            case 'func':
+                if (parse_tree[1] == 'output'):
+                    if type(parse_tree[2]) == tuple:
+                        value = self.execute(parse_tree[2])
+                        value =  value[1] if type(value) == tuple else value
+                        self.logger.log(f'Output: {value}')
+                        print('Output: ', value)
                     else:
-                      
-                        operador = self.execute(parse_tree[2][1])
-                        operandoA = parse_tree[2][2]
-                        operandoB = parse_tree[2][3]
-                        result = str(operador) + " " + str(operandoA) + " " + str(operandoB)
-                        self.send_data(result, (target_address, PORT_B))
-                    #se for receive    
+                        print(parse_tree[1])
+                elif (parse_tree[1] == 'input'):
+                    value = input("Enter value: ")
+                    return value
                 else:
-    
+                    self.execute_channel_method(parse_tree[1])
 
-                    if (len(parse_tree[2]) == 2):
-                      
-                        value = self.receive_data((host_address, PORT_A))
-                        self.symbol_table.update(parse_tree[2][1], value)
-                    else:
-                       
-                        value = self.receive_data((host_address, PORT_B))
-                        ops = value.split(" ")
-
-                        
-                        operador = ops[0]
-                        operandoA = int(ops[1])
-                        operandoB = int(ops[2])
-                        self.symbol_table.update(parse_tree[2][1], operador)
-                        self.symbol_table.update(parse_tree[2][2], operandoA)
-                        self.symbol_table.update(parse_tree[2][3], operandoB)
+               
 
             case 'while':
                 while(self.execute_condition(parse_tree[1])):
@@ -134,17 +110,6 @@ class Executor(ExecutorInterface):
                 else:
                         value = parse_tree[2]
                 self.symbol_table.update(key, value)
-            case 'output':
-                if type(parse_tree[1]) == tuple:
-                    value = self.execute(parse_tree[1])
-                    value =  value[1] if type(value) == tuple else value
-                    self.logger.log(f'Output: {value}')
-                    print('output: ', value)
-                else:
-                    print(parse_tree[1])
-            case 'input':
-                value = input("enter value: ")
-                return value
             case 'ID':
               
                 return self.symbol_table.get(parse_tree[1])[1]
@@ -152,12 +117,50 @@ class Executor(ExecutorInterface):
                 return self.execute(parse_tree[1])
             
             case _:
-               
-                return 0
+                return None
+    
+    def execute_channel_method(self, parse_tree):
+        addresses = self.symbol_table.get(parse_tree[1])
+        addresses = addresses[1]
+        host_address = addresses[0]
+        target_address = addresses[1]
+
+        
+        #se for send
+        if (parse_tree[2][0] == 'send'):
             
+            if (len(parse_tree[2]) == 2):
+                
+                self.send_data(str(self.execute(parse_tree[2][1])),(target_address, PORT_A))
+            else:
+                
+                operador = self.execute(parse_tree[2][1])
+                operandoA = parse_tree[2][2]
+                operandoB = parse_tree[2][3]
+                result = str(operador) + " " + str(operandoA) + " " + str(operandoB)
+                self.send_data(result, (target_address, PORT_B))
+            #se for receive    
+        else:
+            if (len(parse_tree[2]) == 2):
+                value = self.receive_data((host_address, PORT_A))
+                self.symbol_table.update(parse_tree[2][1], value)
+            else:
+                
+                value = self.receive_data((host_address, PORT_B))
+                ops = value.split(" ")
+
+                
+                operador = ops[0]
+                operandoA = int(ops[1])
+                operandoB = int(ops[2])
+                self.symbol_table.update(parse_tree[2][1], operador)
+                self.symbol_table.update(parse_tree[2][2], operandoA)
+                self.symbol_table.update(parse_tree[2][3], operandoB)
+
     def send_data(self, data, address):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
+            self.logger.log("Connecting to server " + address[0] + " at port " + str(address[1]))
             print("Connecting to server " , address[0], " at port ", address[1])
             sock.connect(address)
             sock.sendall(data.encode())
@@ -168,6 +171,7 @@ class Executor(ExecutorInterface):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         try:
+            self.logger.log("Listening to server " + address[0] + " at port " + str(address[1]))
             print("Listening to server " , address[0], " at port ", address[1])
             sock.bind(address)
 
@@ -186,24 +190,15 @@ class Executor(ExecutorInterface):
             sock.close()
 
     def execute_condition(self, parse_tree):
-
-        
         value_a = None
         value_b = None 
 
-        # TODO: Existem outros casos além desse?
         if len(parse_tree) == 4:
             if type(parse_tree[1] == tuple):
                 value_a = self.execute(parse_tree[1])
 
-                # if (type(value_a) == tuple):
-                #     value_a = value_a[1]
-
             if type(parse_tree[3] == tuple):
                 value_b = self.execute(parse_tree[3])
-
-                # if (type(value_b) == tuple):
-                #     value_b = value_b[1]
 
 
         match parse_tree[2]:
@@ -225,7 +220,7 @@ class Executor(ExecutorInterface):
     def execute_expr(self, parse_tree): # ('expr', 1, '+', 2)
         if type(parse_tree) == int:
             return parse_tree
-        if type(parse_tree) == str: # TODO: Como fica pra variável e pra string?
+        if type(parse_tree) == str:
             return self.symbol_table.get(parse_tree)
         if type(parse_tree) == tuple:
             if len(parse_tree) == 4:

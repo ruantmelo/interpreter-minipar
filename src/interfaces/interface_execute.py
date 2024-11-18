@@ -2,6 +2,10 @@ from abc import ABC, abstractmethod
 
 class ExecutorInterface(ABC):
     @abstractmethod
+    def reset(self):
+        """Reseta o executor."""
+        pass
+    @abstractmethod
     def execute(self, parse_tree):
         """Executa a árvore de análise sintática."""
         pass
