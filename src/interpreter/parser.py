@@ -1,17 +1,7 @@
-import logging
 import ply.yacc as yacc
 
 from interfaces.interface_parser import IParser
 from interpreter.lexer import Lexer
-
-# logging.basicConfig(
-#     level = logging.DEBUG,
-#     filename = "parselog.txt",
-#     filemode = "w",
-#     format = "%(filename)10s:%(lineno)4d:%(message)s"
-# )
-# log = logging.getLogger()
-
 class Parser(IParser):
     
     def __init__(self, logger=None):
@@ -76,6 +66,31 @@ class Parser(IParser):
         elif len(p) == 6 and p[1]=='while':
             p[0] = ('while', p[3], p[5])
             
+    def p_assignment(self, p):
+        '''assignment : ID ASSIGN expr
+                    | ID ASSIGN func'''
+        p[0] = ('assign', p[1], p[3])
+    
+    def p_declaration(self, p):
+        '''declaration  : c_channel
+                    | b_declaration
+                    | s_declaration
+                    | i_declaration'''
+        p[0] = p[1]
+    
+    def p_condition(self, p):
+        '''condition  : condition LE_THAN expr
+                    | condition GE_THAN expr
+                    | condition L_THAN expr
+                    | condition G_THAN expr
+                    | condition EQUAL expr
+                    | condition NOT_EQUAL expr
+                    | expr''' # Retirei o bool_val daqui
+        if len(p)==4:
+            p[0] = ('condition', p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
+    
     def p_func(self, p):
         '''func : INPUT LPAREN RPAREN
                 | OUTPUT LPAREN expr RPAREN
@@ -109,29 +124,7 @@ class Parser(IParser):
         else:
             p[0] = (p[1], p[3], p[5], p[7])
 
-    def p_declaration(self, p):
-        '''declaration  : c_channel
-                    | b_declaration
-                    | s_declaration
-                    | i_declaration'''
-        p[0] = p[1]
 
-    def p_condition(self, p):
-        '''condition  : condition LE_THAN expr
-                    | condition GE_THAN expr
-                    | condition L_THAN expr
-                    | condition G_THAN expr
-                    | condition EQUAL expr
-                    | condition NOT_EQUAL expr
-                    | expr''' # Retirei o bool_val daqui
-        if len(p)==4:
-            p[0] = ('condition', p[1], p[2], p[3])
-        else:
-            p[0] = p[1]
-    def p_assignment(self, p):
-        '''assignment : ID ASSIGN expr
-                    | ID ASSIGN func'''
-        p[0] = ('assign', p[1], p[3])
 
     def p_expr(self, p):
         '''expr : expr PLUS term

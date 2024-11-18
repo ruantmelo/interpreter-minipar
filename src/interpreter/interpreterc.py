@@ -17,7 +17,9 @@ class Interpreter:
     try:
       parse_tree = self._parser.parsing(program)
       print(parse_tree)
+      self._semantic.reset()
       self._semantic.check_semantic(parse_tree)
+
       self._executor.reset()
       self._executor.execute(parse_tree)
     except Exception as exception:

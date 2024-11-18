@@ -13,5 +13,17 @@ SEQ
     resultado = operandoA + operandoB
   }
 
+  if (operador == "-") {
+    resultado = operandoA - operandoB
+  }
+
+  if (operador == "*") {
+    resultado = operandoA * operandoB
+  }
+
+  if (operador == "/") {
+    resultado = operandoA / operando B
+  }
+
   calculadora.send(resultado)
 

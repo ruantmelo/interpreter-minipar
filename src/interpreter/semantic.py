@@ -6,6 +6,9 @@ class Semantic(ISemantic):
         self.symbol_table = Symbol_Table()
         self.logger = logger
 
+    def reset(self):
+        self.symbol_table = Symbol_Table()
+
     def check_semantic(self, parse_tree):
         if (type(parse_tree) != tuple):
             return parse_tree
