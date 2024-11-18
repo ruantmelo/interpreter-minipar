@@ -9,12 +9,12 @@ from interpreter.interpreterc import Interpreter
 
 from interpreter.parser import Parser
 from interpreter.executor import Executor
-
+from interpreter.semantic import Semantic
 class InterpreterGUI:
     def __init__(self):
         self._root = self._gui_config()
         self._logger = TkLogger(self.txt_output)
-        self._interpreter = Interpreter(logger=self._logger, Parser=Parser, Executor=Executor)
+        self._interpreter = Interpreter(logger=self._logger, Parser=Parser, Semantic=Semantic, Executor=Executor)
         
 
         self._root.mainloop()

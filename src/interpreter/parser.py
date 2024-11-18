@@ -206,3 +206,4 @@ class Parser(IParser):
     # Error rule for syntax errors
     def p_error(self, p):
         print("Syntax error in input!")
+        print(p)

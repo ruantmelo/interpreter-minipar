@@ -56,6 +56,7 @@ class Lexer(ILexer):
     t_NOT_EQUAL = r'!='
     t_LE_THAN = r'<='
     t_GE_THAN = r'>='
+    t_ignore_COMMENT = r'\#.*'
     t_PLUS   = r'\+'
     t_MINUS  = r'-'
     t_TIMES  = r'\*'

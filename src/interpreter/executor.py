@@ -235,7 +235,9 @@ class Executor(ExecutorInterface):
                     case '*':
                         return a * b
                     case '/':
-                        return a / b
+                        if b == 0:
+                            raise Exception("Division by zero")
+                        return a // b
             if len(parse_tree) == 3:
                 return self.symbol_table.get(parse_tree[2])
             
@@ -250,5 +252,7 @@ class Executor(ExecutorInterface):
             case '*':
                 return a * b
             case '/':
-                return a / b
+                if b == 0:
+                    raise Exception("Division by zero")
+                return a // b
         pass
